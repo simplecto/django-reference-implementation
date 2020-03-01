@@ -1,3 +1,8 @@
+IMAGE:=django-reference
+DATE:=$(shell date "+%Y%m%d%H%M")
+
+TAGGED_IMAGE:=$(IMAGE):$(DATE)
+
 ##########################################################################
 # MENU
 ##########################################################################
@@ -14,9 +19,14 @@ bootstrap-dev: venv/ ## Bootstrap the local development environment
 
 .PHONY: build
 build: ## Build the Django Docker image locally
-	docker build -t django .
+	docker build -t $(IMAGE) -t $(TAGGED_IMAGE) .
 
 .PHONY: run-local
 run-local: ## Run the Django Docker locally on port 8000
 run-local:
 	docker-compose up -d
+
+.PHONY: push
+push: ## Push new docker image to docker hub
+	docker build -t $(IMAGE) -t $(TAGGED_IMAGE) -t simplecto/$(TAGGED_IMAGE)  .
+	docker push simplecto/$(TAGGED_IMAGE)
