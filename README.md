@@ -1,5 +1,5 @@
 # Project Purpose
-This project is a reference implmentation for a production-ready Django 
+This project is a reference implementation for a production-ready Django 
 application with common use cases baked in. It is the base application that 
 Simple CTO uses for its projects, and we hope that it can be helpful to you. 
 It is quite opinionated as to its patterns, conventions, and library choices.
