@@ -109,5 +109,13 @@ USE_TZ = True
 
 EMAIL_CONFIG = dj_email_url.config()
 
+"""
+STATIC ASSET HANDLING
+  - WhiteNoise configuration for forever-cacheable files and compression support
+"""
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR + '/static'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
