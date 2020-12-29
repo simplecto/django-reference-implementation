@@ -1,6 +1,6 @@
 IMAGE:=django-reference
 DATE:=$(shell date "+%Y%m%d%H%M")
-
+NAMESPACE:=mynamespace
 TAGGED_IMAGE:=$(IMAGE):$(DATE)
 
 ##########################################################################
@@ -28,5 +28,5 @@ run-local:
 
 .PHONY: push
 push: ## Push new docker image to docker hub
-	docker build -t $(IMAGE) -t $(TAGGED_IMAGE) -t simplecto/$(TAGGED_IMAGE)  .
-	docker push simplecto/$(TAGGED_IMAGE)
+	docker build -t $(IMAGE) -t $(TAGGED_IMAGE) -t $(NAMESPACE)/$(TAGGED_IMAGE)  .
+	docker push $(NAMESPACE)/$(TAGGED_IMAGE)
