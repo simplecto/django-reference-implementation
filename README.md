@@ -60,3 +60,14 @@ to learn more about a full production environment, then please refer
 to this repo:
 
   * [simplecto/production-stack-template](https://github.com/simplecto/production-stack-template)
+
+## Contributing
+
+Contributions are welcome. Simply fork, submit a pull request, and explain
+what you would like to fix/improve.
+
+## License
+
+This code is uner the MIT License. See LICENSE.txt
+
+
