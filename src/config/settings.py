@@ -23,6 +23,9 @@ if os.environ['DEV_ENV'] in ['production', 'staging']:
         send_default_pii=True
     )
 
+# You can explicitly turn this off in your env file
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', True)
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ALLOWED_HOSTS = ['*']
 
