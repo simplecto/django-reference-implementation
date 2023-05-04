@@ -25,7 +25,7 @@ if os.environ['DEV_ENV'] in ['production']:
     )
 
 # You can explicitly turn this off in your env file
-SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', True)
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', False)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ALLOWED_HOSTS = ['*']
@@ -98,9 +98,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
