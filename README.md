@@ -36,7 +36,7 @@ You will see a number of use cases covered:
 
   * Docker
   * Python 3.6 or later 
-  * SMTP Credentials (I use Sendgrid)
+  * SMTP Credentials
 
 # Developing locally
 PyCharm's integration with the debugger and Docker leaves some things to be desired. 
@@ -44,16 +44,33 @@ This has changed how I work on the desktop. In short, I don't use docker for the
 part of development. I use the local development environment provided by MacOS.
 
 
+# Customizing the docker-compose.yml
 
-## My Preferred developer stack
+## Adding more workers
+
+Below is the text used for adding a worker that sends SMS messages.
+
+These workers are actually Django management commands that are run in a loop.
+
+```
+  worker_sms:
+    image: django
+    command: ./manage.py send_sms_worker
+    restart: always
+    env_file: env
+    networks:
+      - db
+```
+
+# My Preferred developer stack
 
   * PyCharm (paid but community version is good, too)
-  * Postgres installed via homebrew
-  * Mailhog installed via Homebrew
+  * Postgres installed via homebrew or docker
+  * Mailhog installed via Homebrew or docker
   * Virtual environment
 
 
-## Related projects
+# Related projects
 
 This project is tightly scoped to Django, but if you are interested
 to learn more about a full production environment, then please refer
@@ -61,12 +78,12 @@ to this repo:
 
   * [simplecto/production-stack-template](https://github.com/simplecto/production-stack-template)
 
-## Contributing
+# Contributing
 
 Contributions are welcome. Simply fork, submit a pull request, and explain
 what you would like to fix/improve.
 
-## License
+# License
 
 This code is uner the MIT License. See LICENSE.txt
 
