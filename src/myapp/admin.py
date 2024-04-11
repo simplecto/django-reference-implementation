@@ -1,3 +1,6 @@
 from django.contrib import admin
+from myapp.models import SiteConfiguration
 
-# Register your models here.
+
+admin.site.register(SiteConfiguration)
+
