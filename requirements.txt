@@ -6,7 +6,7 @@ dj-email-url==1.0.6
 Django==5.0.4
 django-cache-url==3.4.5
 django-solo==2.2.0
-gunicorn==21.2.0
+gunicorn==22.0.0
 idna==3.7
 packaging==24.0
 psycopg2-binary==2.9.9
