@@ -1,12 +1,7 @@
 {
-  "scripts": {
-    "dokku": {
-      "postdeploy": "./manage.py migrate"
-    }
-  },
   "healthcheck": {
     "web": {
-      "path": "/healt-check",
+      "path": "/health-check",
       "interval": 10,
       "timeout": 5,
       "grace": 15
