@@ -1,5 +1,5 @@
 {
-  "healthcheck": {
+  "healthchecks": {
     "web": {
       "path": "/health-check",
       "interval": 10,
