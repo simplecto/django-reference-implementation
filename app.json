@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dokku" : {
-        "predeploy": "python manage collectstatic --noinput"
+        "predeploy": "python manage.py collectstatic --noinput"
     }
   }
 }
