@@ -10,22 +10,18 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv(os.getenv('ENV_FILE', 'env')))
 
-DEBUG = os.environ['DEBUG']
+DEBUG = os.environ['DEBUG'] in ['true', '1', 'yes', 't', 'y']
 SECRET_KEY = os.environ['SECRET_KEY']
+BASE_URL = os.environ['BASE_URL']
+
 
 if os.environ['DEV_ENV'] in ['production']:
-    sentry_sdk.init(
-        dsn=os.environ['SENTRY_DSN'],
-        integrations=[DjangoIntegration()],
-        traces_sample_rate=1.0,
-
-        # If you wish to associate users to errors (assuming you are using
-        # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=False
-    )
+    sentry_sdk.init(dsn=os.environ['SENTRY_DSN'])
 
 # You can explicitly turn this off in your env file
 SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', False)
+
+CSRF_TRUSTED_ORIGINS = [BASE_URL]
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ALLOWED_HOSTS = ['*']

@@ -1,2 +1,2 @@
-release: python manage.py migrate
+release: ./procfile-release.sh
 web: gunicorn config.wsgi --bind 0.0.0.0:$PORT
