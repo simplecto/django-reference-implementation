@@ -4,3 +4,5 @@ env
 .idea/
 docker-compose.yml
 Makefile
+
+src/staticfiles/*
