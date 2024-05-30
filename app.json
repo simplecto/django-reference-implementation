@@ -8,7 +8,7 @@
         "path": "/health-check",
         "initialDelay": 3,
         "attempts": 3
-      },
+      }
     ]
   },
   "scripts": {
