@@ -11,7 +11,6 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 COPY gunicorn_settings.py /gunicorn_settings.py
-COPY procfile-release.sh /app/procfile-release.sh
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

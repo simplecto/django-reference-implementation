@@ -6,5 +6,10 @@
       "timeout": 5,
       "grace": 15
     }
+  },
+  "scripts": {
+    "dokku" : {
+        "predeploy": "python manage collectstatic --noinput"
+    }
   }
 }
