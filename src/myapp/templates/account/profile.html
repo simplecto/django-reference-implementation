@@ -1,0 +1,27 @@
+<!-- account/profile.html -->
+{% load socialaccount %}
+{% providers_media_js %}
+{% get_social_accounts user as accounts %}
+{% get_providers as socialaccount_providers %}
+
+<div class="account-profile">
+    <h2>Profile</h2>
+    <p>Welcome, {{ user.username }}!</p>
+
+    <h3>Connected Accounts</h3>
+    <ul>
+        {% for account in user.socialaccount_set.all %}
+            <li>
+                {{ account.provider }}
+                <a href="{% url 'socialaccount_connections' %}?action=disconnect&account={{ account.pk }}">Disconnect</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h3>Connect New Account</h3>
+    <ul>
+        {% for provider in socialaccount_providers %}
+            <li><a href="{% provider_login_url provider.id %}">Connect {{ provider.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

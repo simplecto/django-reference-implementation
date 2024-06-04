@@ -4,6 +4,7 @@ charset-normalizer==3.3.2
 dj-database-url==2.1.0
 dj-email-url==1.0.6
 Django==5.0.4
+django-allauth
 django-cache-url==3.4.5
 django-solo==2.2.0
 gunicorn==22.0.0
