@@ -1,10 +1,10 @@
 # Project Purpose
-This project is a reference implementation for a production-ready Django 
-application with common use cases baked in. It is the base application that 
-Simple CTO uses for its projects, and we hope that it can be helpful to you. 
+This project is a reference implementation for a production-ready Django
+application with common use cases baked in. It is the base application that
+Simple CTO uses for its projects, and we hope that it can be helpful to you.
 It is quite opinionated as to its patterns, conventions, and library choices.
 
-This is not prescriptive. That is to say that there are many ways to do 
+This is not prescriptive. That is to say that there are many ways to do
 build applications, and this is ours. You are welcome to fork, copy, and
 imitate. We stand on the shoulders of giants, and you are welcome to as
 well.
@@ -35,11 +35,11 @@ You will see a number of use cases covered:
 ## Requirements
 
   * Docker
-  * Python 3.6 or later 
+  * Python 3.6 or later
   * SMTP Credentials
 
 # Developing locally
-PyCharm's integration with the debugger and Docker leaves some things to be desired. 
+PyCharm's integration with the debugger and Docker leaves some things to be desired.
 This has changed how I work on the desktop. In short, I don't use docker for the django
 part of development. I use the local development environment provided by MacOS.
 
@@ -86,5 +86,3 @@ what you would like to fix/improve.
 # License
 
 This code is uner the MIT License. See LICENSE.txt
-
-
