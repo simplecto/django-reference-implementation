@@ -1,19 +1,22 @@
-from django.core.management import BaseCommand
-from myapp.models import SiteConfiguration
-import time
+"""Sample async worker that runs a job every N seconds."""
 
+import time
 import logging
+
+from django.core.management import BaseCommand
+import myapp.models
 
 logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
+    """Simple Async Worker."""
 
     help = "Simple Async Worker"
 
     def __init__(self):
         super().__init__()
-        self.config = SiteConfiguration.get_solo()
+        self.config = myapp.models.SiteConfiguration.get_solo()
 
     def handle(self, *args, **options):
 
@@ -23,9 +26,9 @@ class Command(BaseCommand):
             self.config.refresh_from_db()
 
             if self.config.worker_enabled:
-                logger.info(f"Running the job.")
+                logger.info("Running the job.")
             else:
-                logger.info(f"Job is disabled.")
+                logger.info("Job is disabled.")
 
-            logger.info(f"Sleeping for {self.config.worker_sleep_seconds} seconds.")
+            logger.info("Sleeping for %d seconds.", self.config.worker_sleep_seconds)
             time.sleep(self.config.worker_sleep_seconds)
