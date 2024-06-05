@@ -11,4 +11,4 @@ class SiteConfiguration(SingletonModel):
     worker_sleep_seconds = models.IntegerField(default=FIVE_SECONDS)
 
     def __str__(self):
-        return 'Site Configuration'
+        return "Site Configuration"

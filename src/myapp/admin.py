@@ -3,4 +3,3 @@ from myapp.models import SiteConfiguration
 
 
 admin.site.register(SiteConfiguration)
-

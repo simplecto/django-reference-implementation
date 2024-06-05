@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
 
-    help = 'Simple Async Worker'
+    help = "Simple Async Worker"
 
     def __init__(self):
         super().__init__()
