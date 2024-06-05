@@ -5,3 +5,4 @@ docker-compose.yml
 Makefile
 
 src/staticfiles/*
+/.idea/dataSources.xml
