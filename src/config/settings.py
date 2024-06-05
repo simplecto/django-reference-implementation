@@ -80,7 +80,8 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Parse database connection url strings like psql://user:pass@127.0.0.1:8458/db
 DATABASES = {
-    # read os.environ['DATABASE_URL'] and raises ImproperlyConfigured exception if not found
+    # read os.environ['DATABASE_URL'] and raises ImproperlyConfigured exception
+    # if not found
     "default": dj_database_url.config()
 }
 
@@ -90,16 +91,16 @@ CACHES = {"default": django_cache_url.config()}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa: E501
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",  # noqa: E501
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",  # noqa: E501
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",  # noqa: E501
     },
 ]
 
@@ -118,7 +119,7 @@ EMAIL_CONFIG = dj_email_url.config()
 
 """
 STATIC ASSET HANDLING
-  - WhiteNoise configuration for forever-cacheable files and compression support
+- WhiteNoise configuration for forever-cacheable files and compression support
 """
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
