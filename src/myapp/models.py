@@ -1,5 +1,3 @@
-"""All of our Django models will be defined in this file."""
-
 import solo.models
 from django.db import models
 
