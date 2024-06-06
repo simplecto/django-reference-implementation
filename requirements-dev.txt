@@ -1,4 +1,4 @@
-black
-ruff
-pre-commit
-flit
+    black
+    ruff
+    pre-commit
+    flit
