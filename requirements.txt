@@ -1,7 +1,7 @@
 asgiref==3.8.1
 certifi==2024.2.2
 charset-normalizer==3.3.2
-dj-database-url==2.1.0
+dj-database-url==2.2.0
 dj-email-url==1.0.6
 Django==5.0.4
 django-allauth
