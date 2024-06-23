@@ -9,7 +9,7 @@ django-cache-url==3.4.5
 django-solo==2.2.0
 gunicorn==22.0.0
 idna==3.7
-packaging==24.0
+packaging==24.1
 psycopg2-binary==2.9.9
 python-dotenv==1.0.1
 pytz==2024.1
