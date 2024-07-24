@@ -1,5 +1,5 @@
 asgiref==3.8.1
-certifi==2024.6.2
+certifi==2024.7.4
 charset-normalizer==3.3.2
 dj-database-url==2.2.0
 dj-email-url==1.0.6
