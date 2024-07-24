@@ -17,12 +17,14 @@ class SiteConfiguration(solo.models.SingletonModel):
     js_head = models.TextField(
         blank=True,
         null=True,
+        default="",
         help_text="Javascript to be included in the head tag. "
         "You should include the script tags.",
     )
     js_body = models.TextField(
         blank=True,
         null=True,
+        default="",
         help_text="Javascript to be included before the closing body tag. "
         "You should include the script tags.",
     )
