@@ -8,16 +8,18 @@ from allauth.socialaccount.models import SocialAccount
 
 def index(request: django.http.HttpRequest) -> django.http.HttpResponse:
     """
-    Home page view. This is the first page that the user sees when they visit the site
+    Home page view. This is the first page that the user sees when they visit
+    the site
     :param request:
     :return:
     """
     return render(request, "home.html")
 
 
-def health_check() -> django.http.HttpResponse:
+def health_check(request) -> django.http.HttpResponse:
     """
-    Health check view. Used by the load balancer or Docker to check if the server is up
+    Health check view. Used by the load balancer or Docker to check if the
+    server is up
     :return:
     """
     return django.http.HttpResponse("OK")
