@@ -14,7 +14,7 @@ psycopg2-binary==2.9.9
 python-dotenv==1.0.1
 pytz==2024.1
 requests==2.32.3
-sentry-sdk==2.7.1
+sentry-sdk==2.11.0
 sqlparse==0.5.1
 typing_extensions==4.12.2
 urllib3==2.2.2
