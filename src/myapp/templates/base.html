@@ -1,0 +1,21 @@
+{% load static solo_tags %}
+{% get_solo 'myapp.SiteConfiguration' as site_config %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{% block meta_title %}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{ site_config.js_head|safe }}
+    {% block stylehseets %}{% endblock %}
+    {% block javascript %}{% endblock %}
+</head>
+
+<body>
+    {% block content %}{% endblock %}
+    {{ site_config.js_body|safe }}
+</body>
+
+</html>

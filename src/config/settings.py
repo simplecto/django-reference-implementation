@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.twitter_oauth2",
     # 'allauth.socialaccount.providers.openid',
     "allauth.socialaccount.providers.openid_connect",
+    "solo",
 ]
 
 MIDDLEWARE = [
