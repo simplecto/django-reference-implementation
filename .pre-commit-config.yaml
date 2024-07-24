@@ -15,8 +15,10 @@ repos:
   hooks:
     # Run the linter.
     - id: ruff
+      exclude: ruff.xml
     # Run the formatter.
     - id: ruff-format
+      exclude: ruff.xml
 
 - repo: https://github.com/PyCQA/bandit
   rev: '1.7.9' # Update me!
