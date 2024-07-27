@@ -5,7 +5,7 @@
         "type": "startup",
         "name": "webcheck",
         "description": "Check if the web service is up",
-        "path": "/health-check",
+        "path": "/health-check/",
         "initialDelay": 3,
         "attempts": 3
       }

@@ -19,6 +19,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("", myapp.views.index, name="home"),
-    path("health-check", myapp.views.health_check, name="health-check"),
+    path("health-check/", myapp.views.health_check, name="health-check"),
     path("profile/", myapp.views.profile, name="profile"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
