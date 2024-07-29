@@ -1,5 +1,7 @@
 import solo.models
 from django.db import models
+from .worker_configurations import WorkerConfiguration
+from .worker_errors import WorkerError
 
 
 FIVE_SECONDS = 5
@@ -31,3 +33,6 @@ class SiteConfiguration(solo.models.SingletonModel):
 
     def __str__(self):
         return "Site Configuration"
+
+
+__all__ = ["SiteConfiguration", "WorkerConfiguration", "WorkerError"]
