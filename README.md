@@ -37,6 +37,7 @@ You will see a number of use cases covered:
   * Docker
   * Python 3.6 or later
   * SMTP Credentials
+  * S3 Credentials (optional)
 
 # Developing locally
 PyCharm's integration with the debugger and Docker leaves some things to be desired.
