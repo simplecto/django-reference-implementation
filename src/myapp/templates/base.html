@@ -8,13 +8,23 @@
     <title>{% block meta_title %}{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}{% endblock %}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'site.css' %}">
+    <script src="{% static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/htmx.js' %}"></script>
+
     {{ site_config.js_head|safe }}
-    {% block stylehseets %}{% endblock %}
+    {% block stylesheets %}{% endblock %}
     {% block javascript %}{% endblock %}
 </head>
 
 <body>
+    {% include "_header.html" %}
+    <main class="container">
     {% block content %}{% endblock %}
+    </main>
+    {% include "_footer.html" %}
     {{ site_config.js_body|safe }}
 </body>
 
