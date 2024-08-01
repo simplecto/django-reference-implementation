@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from .profile import profile
@@ -10,6 +11,10 @@ def index(request: HttpRequest) -> HttpResponse:
     :param request:
     :return:
     """
+    test_flash = request.GET.get("test_flash", None)
+    if test_flash:
+        messages.success(request, "This is a test flash message.")
+
     return render(request, "home.html")
 
 
