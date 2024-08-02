@@ -71,7 +71,20 @@ These workers are actually Django management commands that are run in a loop.
   * Virtual environment
 
 
-# Related projects
+# Other Django Template Projects
+Thankfully there are many other Django template projects that you can use.
+We all take inspiration from each other and build upon the work of others.
+If this one is not to your taste, then there are others to consider:
+
+  * [cookiecutter-django](https://github.com/cookiecutter/cookiecutter-django)
+  * [django-superapp](https://github.com/django-superapp/django-superapp)
+  * [SaaS Pegasus](https://www.saaspegasus.com/)
+
+*NOTE: These are not endorsements of these projects. Just examples of other
+ways to get started with Django.*
+
+
+# Related projects (my own)
 
 This project is tightly scoped to Django, but if you are interested
 to learn more about a full production environment, then please refer
