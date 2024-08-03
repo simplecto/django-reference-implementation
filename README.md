@@ -54,20 +54,18 @@ Below is the text used for adding a worker that sends SMS messages.
 These workers are actually Django management commands that are run in a loop.
 
 ```
-  worker_sms:
-    image: django
-    command: ./manage.py send_sms_worker
+  simple_async_worker:
+    build: .
+    command: ./manage.py simple_async_worker
     restart: always
     env_file: env
-    networks:
-      - db
 ```
 
 # My Preferred developer stack
 
-  * PyCharm (paid but community version is good, too)
-  * Postgres installed via homebrew or docker
-  * Mailhog installed via Homebrew or docker
+  * [PyCharm](https://jetbrains.com/pycharm/) (paid but community version is good, too)
+  * [Postgres](https://postgresql.org) installed via homebrew or docker
+  * [Mailpit](https://mailpit.axllent.org/) for SMTP testing *Installed via Homebrew or docker).
   * Virtual environment
 
 

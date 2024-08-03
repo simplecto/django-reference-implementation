@@ -3,50 +3,48 @@ version: "3.4"
 services:
 
   django:
-    container_name: django
-    image: django
+    build:
+        context: .
+        dockerfile: Dockerfile
     restart: always
     env_file: env
-    networks:
-      - traefik
-      - db
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.example.rule=Host(`example.com`,`www.example.com`)
-      - traefik.http.routers.example.tls=true
-      - traefik.http.routers.example.tls.certresolver=le
-      - traefik.http.services.example.loadbalancer.server.port=8000
-      - traefik.enable=true
+    depends_on:
+        - postgres
 
-  worker_email:
-    image: django
-    command: ./manage.py send_email_worker
+  postgres:
+    image: postgres
+    restart: always
+    volumes:
+        - postgres_data:/var/lib/postgresql/data
+    environment:
+        # this matches the values in the env.sample file
+        POSTGRES_DB: django_reference
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: pass123
+
+  # if in development
+  mailpit:
+    container_name: mailpit
+    image: axllent/mailpit
+    restart: always
+    volumes:
+        - mailpit_data:/data
+    ports:
+        - "8025:8025"
+        - "1025:1025"
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+
+  simple_async_worker:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    command: ./manage.py simple_async_worker
     restart: always
     env_file: env
-    networks:
-      - db
-
-# Enable this worker if you want to enable the SMS worker
-#  worker_sms:
-#    image: django
-#    command: ./manage.py send_sms_worker
-#    restart: always
-#    env_file: env
-#    networks:
-#      - db
-
-# Enable this worker if you want to push the healthcheck
-#  worker_healthcheck_push:
-#    image: django
-#    command: ./manage.py healthcheck_push
-#    restart: always
-#    env_file: env
-#    networks:
-#      - db
-
-
-networks:
-  traefik:
-    external: true
-  db:
-    external: true
+    depends_on:
+        - postgres
