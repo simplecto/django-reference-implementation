@@ -1,4 +1,4 @@
 black==24.4.2
-ruff==0.5.5
+ruff==0.5.6
 pre-commit==3.8.0
 flit==3.9.0
