@@ -77,6 +77,7 @@ If this one is not to your taste, then there are others to consider:
   * [cookiecutter-django](https://github.com/cookiecutter/cookiecutter-django)
   * [django-superapp](https://github.com/django-superapp/django-superapp)
   * [SaaS Pegasus](https://www.saaspegasus.com/)
+  * [SaaS Boilerplate](https://github.com/apptension/saas-boilerplate)
 
 *NOTE: These are not endorsements of these projects. Just examples of other
 ways to get started with Django.*
