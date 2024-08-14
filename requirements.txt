@@ -7,7 +7,7 @@ Django==5.0.7
 django-allauth
 django-cache-url==3.4.5
 django-solo==2.3.0
-gunicorn==22.0.0
+gunicorn==23.0.0
 idna==3.7
 packaging==24.1
 psycopg2-binary==2.9.9
