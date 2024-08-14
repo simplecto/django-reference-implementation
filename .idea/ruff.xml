@@ -3,6 +3,7 @@
   <component name="RuffConfigService">
     <option name="projectRuffExecutablePath" value="$PROJECT_DIR$/.venv/bin/ruff" />
     <option name="ruffConfigPath" value="$PROJECT_DIR$/pyproject.toml" />
-    <option name="runRuffOnSave" value="true" />
+    <option name="runRuffOnReformatCode" value="false" />
+    <option name="showRuleCode" value="false" />
   </component>
 </project>
