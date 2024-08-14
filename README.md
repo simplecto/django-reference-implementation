@@ -98,4 +98,4 @@ what you would like to fix/improve.
 
 # License
 
-This code is uner the MIT License. See LICENSE.txt
+This code is under the MIT License
