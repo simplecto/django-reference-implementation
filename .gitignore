@@ -1,8 +1,8 @@
 venv/
 __pycache__/
+data/
+
 env
-docker-compose.yml
-Makefile
 
 src/staticfiles/*
 /.idea/dataSources.xml

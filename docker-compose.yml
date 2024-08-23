@@ -1,0 +1,66 @@
+services:
+
+  django:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: env.sample
+    volumes:
+      - ./src:/app
+    ports:
+      - "8000:8000"
+    # for development only, to make sure the server reloads when the code changes
+    command: python manage.py runserver 0.0.0.0:8000
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    volumes:
+        - ./data/pgdata:/var/lib/postgresql/data
+    environment:
+        # this matches the values in the env.sample file
+        POSTGRES_DB: django_reference
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: pass123
+    ports:
+      - "5432:5432"
+
+  s3proxy:
+    restart: unless-stopped
+    image: andrewgaul/s3proxy:sha-4976e17
+    platform: linux/arm64 # Use this line for ARM64 (Apple M1). Remove for x86.
+    ports:
+      - "9000:80"
+    volumes:
+      - ./data/s3proxy:/data
+    environment:
+      S3PROXY_AUTHORIZATION: none
+      S3PROXY_STORAGE: filesystem
+
+  # if in development
+  mailpit:
+    image: axllent/mailpit
+    restart: unless-stopped
+    volumes:
+      - ./data/mailpit:/data
+    ports:
+      - 8025:8025
+      - 1025:1025
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+  simple_async_worker:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    command: ./manage.py simple_async_worker
+    restart: unless-stopped
+    env_file: env
+    volumes:
+      - ./src:/app
+    depends_on:
+        - postgres

@@ -9,17 +9,34 @@ build applications, and this is ours. You are welcome to fork, copy, and
 imitate. We stand on the shoulders of giants, and you are welcome to as
 well.
 
+---
+
+# Getting Started
+
+You are impatient, I get it. Here is the [quick start guide](docs/getting_started.md).
+
+---
+
 # Use cases covered
 You will see a number of use cases covered:
 
-  * Async tasks (sending email and sms, health-check PUSH)
+  * Async tasks (sending email, health-check PUSH)
+    * Viable alternatives to Celery
   * Sending e-mail (with SMTP)
   * User Login, Logout, Registration, password reset (email, social)
   * Admin interface customization
   * Health-check (HEAD/GET used by Load Balancers)
   * Simple template tags (quick image thumbnails)
   * Serving static assets from Django vs. needing nginx/apache
+  * Storing assets in S3 (optional)
+  * Local development using PyCharm and/or Docker
+  * Command line automation with `Makefile`
+  * Deployment with Docker and Docker Compose
+  * Deployment to Heroku, Dokku, etc using `Procfile`
+  * Opinionated linting and formatting with ruff
+  * Configuration and worker management inside the admin interface
 
+---
 
 # Project Principles
 
@@ -35,15 +52,11 @@ You will see a number of use cases covered:
 ## Requirements
 
   * Docker
-  * Python 3.6 or later
+  * Python 3.12 or later
   * SMTP Credentials
   * S3 Credentials (optional)
 
-# Developing locally
-PyCharm's integration with the debugger and Docker leaves some things to be desired.
-This has changed how I work on the desktop. In short, I don't use docker for the django
-part of development. I use the local development environment provided by MacOS.
-
+---
 
 # Customizing the docker-compose.yml
 
@@ -58,16 +71,27 @@ These workers are actually Django management commands that are run in a loop.
     build: .
     command: ./manage.py simple_async_worker
     restart: always
-    env_file: env
+    env_file: env.sample
 ```
 
-# My Preferred developer stack
+---
+
+# Developing locally
+PyCharm's integration with the debugger and Docker leaves some things to be desired.
+This has changed how I work on the desktop. In short, I don't use docker for the django
+part of development. I use the local development environment provided by MacOS.
+
+## My Preferred developer stack
 
   * [PyCharm](https://jetbrains.com/pycharm/) (paid but community version is good, too)
   * [Postgres](https://postgresql.org) installed via homebrew or docker
-  * [Mailpit](https://mailpit.axllent.org/) for SMTP testing *Installed via Homebrew or docker).
+  * [Mailpit](https://mailpit.axllent.org/) for SMTP testing *Installed via
+    Homebrew or docker).
+  * [s3proxy](https://github.com/andrewgaul/s3proxy) for S3 testing
+    (installed via Homebrew or docker)
   * Virtual environment
 
+---
 
 # Other Django Template Projects
 Thankfully there are many other Django template projects that you can use.
@@ -88,19 +112,14 @@ If this one is not to your taste, then there are others to consider:
 *NOTE: These are not endorsements of these projects. Just examples of other
 ways to get started with Django.*
 
-
-# Related projects (my own)
-
-This project is tightly scoped to Django, but if you are interested
-to learn more about a full production environment, then please refer
-to this repo:
-
-  * [simplecto/production-stack-template](https://github.com/simplecto/production-stack-template)
+---
 
 # Contributing
 
 Contributions are welcome. Simply fork, submit a pull request, and explain
 what you would like to fix/improve.
+
+---
 
 # License
 

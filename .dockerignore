@@ -3,5 +3,5 @@ __pycache__/
 .gitignore
 env
 .idea/
-
+data/
 src/staticfiles/*
