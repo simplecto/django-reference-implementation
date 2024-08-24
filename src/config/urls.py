@@ -1,14 +1,14 @@
-"""config URL Configuration"""
+"""Config URL Configuration."""
 
+import django.views.generic
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
-import django.views.generic
+from django.urls import include, path
+
 import myapp.views
 
-
-urlpatterns = [
+urlpatterns = [  # noqa: RUF005
     path(
         "robots.txt",
         django.views.generic.TemplateView.as_view(

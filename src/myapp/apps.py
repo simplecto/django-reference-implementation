@@ -2,4 +2,6 @@ from django.apps import AppConfig
 
 
 class MyappConfig(AppConfig):
-    name = 'myapp'
+    """App configuration."""
+
+    name = "myapp"

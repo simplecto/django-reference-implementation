@@ -1,9 +1,12 @@
 from django.contrib import admin
+
 from myapp.models import WorkerConfiguration
 
 
 @admin.register(WorkerConfiguration)
 class WorkerConfigurationAdmin(admin.ModelAdmin):
+    """Admin interface for WorkerConfiguration."""
+
     list_display = (
         "name",
         "is_enabled",

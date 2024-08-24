@@ -1,12 +1,13 @@
 """Settings for the project."""
 
 import os
-import django_cache_url
-import sentry_sdk
+from pathlib import Path
+
 import dj_database_url
 import dj_email_url
-from dotenv import load_dotenv, find_dotenv
-
+import django_cache_url
+import sentry_sdk
+from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv(os.getenv("ENV_FILE", "env")))
 
@@ -23,7 +24,8 @@ SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", False)
 
 CSRF_TRUSTED_ORIGINS = [BASE_URL]
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
@@ -64,7 +66,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [BASE_DIR / "myapp/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -93,16 +95,16 @@ CACHES = {"default": django_cache_url.config()}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa: E501
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",  # noqa: E501
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",  # noqa: E501
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",  # noqa: E501
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -123,12 +125,9 @@ EMAIL_CONFIG = dj_email_url.config()
 STATIC ASSET HANDLING
 - WhiteNoise configuration for forever-cacheable files and compression support
 """
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -152,9 +151,7 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "standard": {
-            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-        },
+        "standard": {"format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"},
     },
     "handlers": {
         "console": {

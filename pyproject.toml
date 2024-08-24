@@ -13,12 +13,35 @@ dynamic = ["version", "description"]
 [project.urls]
 Home = "https://simplecto.com"
 
-[tool.ruff]
-# Set the maximum line length to 79.
-line-length = 79
+# Set the maximum line length to 120.
+line-length = 120
+target-version = "py312"
+exclude = [
+    "pyproject.toml",
+    "src/myapp/tests/*",
+    "src/myapp/migrations/*",
+    ".idea/**",
+    "src/manage.py",
+]
+
 
 [tool.ruff.lint]
 # Add the `line-too-long` rule to the enforced rule set. By default, Ruff omits rules that
 # overlap with the use of a formatter, like Black, but we can override this behavior by
 # explicitly adding the rule.
-extend-select = ["E501"]
+ignore = [
+    "ANN101",
+    "E501",
+    "D203",
+    "D213",
+    "D100",
+    "COM812"
+]
+select = ["ALL", "W2", "I"]
+exclude = [
+    "pyproject.toml",
+    "src/myapp/tests/*",
+    "src/myapp/migrations/*",
+    ".idea/**",
+    "src/manage.py",
+]
