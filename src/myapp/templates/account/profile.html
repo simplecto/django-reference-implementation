@@ -1,9 +1,10 @@
-<!-- account/profile.html -->
+{% extends "base.html" %}
 {% load socialaccount %}
 {% providers_media_js %}
 {% get_social_accounts user as accounts %}
 {% get_providers as socialaccount_providers %}
 
+{% block content %}
 <div class="account-profile">
     <h2>Profile</h2>
     <p>Welcome, {{ user.username }}!</p>
@@ -25,3 +26,4 @@
         {% endfor %}
     </ul>
 </div>
+{% endblock %}

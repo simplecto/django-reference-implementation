@@ -8,6 +8,10 @@
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
+    <envs>
+      <env name="PYTHONUNBUFFERED" value="1" />
+      <env name="DJANGO_SETTINGS_MODULE" value="config.settings" />
+    </envs>
     <option name="SDK_HOME" value="" />
     <option name="SDK_NAME" value="Python 3.12 (django-reference-implementation)" />
     <option name="WORKING_DIRECTORY" value="$Projectpath$" />
