@@ -8,6 +8,8 @@ from django.urls import include, path
 
 import myapp.views
 
+# import urls from the organizations app
+
 urlpatterns = [  # noqa: RUF005
     path(
         "robots.txt",
@@ -21,4 +23,8 @@ urlpatterns = [  # noqa: RUF005
     path("", myapp.views.index, name="home"),
     path("health-check/", myapp.views.health_check, name="health-check"),
     path("profile/", myapp.views.profile, name="profile"),
+    path(
+        "organizations/",
+        include(("organizations.urls", "organizations"), namespace="organizations"),
+    ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

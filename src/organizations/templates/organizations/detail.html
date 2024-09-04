@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ organization.name }}</h1>
+
+    {# invite members link #}
+    {% if org_member.can_admin %}
+        <p>
+            <a href="{% url "organizations:invite" slug=organization.slug %}" title="Invite someone to organization">Invite someone to organization</a>
+        </p>
+    {% endif %}
+
+    {# show members #}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Members</th>
+                <th>Role</th>
+                <th>Status</th>
+                {% if org_member.can_admin %}<th>Actions</th>{% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in organization.members.all %}
+                <tr>
+                    <td>{{ member.user.username }}</td>
+                    <td>{{ member.role }}</td>
+                    <td>{{ member.status }}</td>
+                    <td>
+                    {% if org_member.can_admin and member != org_member %}
+                        <a href="{% url "organizations:remove_member" member_id=member.id %}" title="Remove member">Remove</a>
+                        <select name="role" id="role">
+                            <option value="owner">Owner</option>
+                            <option value="admin">Admin</option>
+                            <option value="member">Member</option>
+                        </select>
+                    {% else %}
+                        You can't remove yourself
+                    {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+    </table>
+{% endblock %}

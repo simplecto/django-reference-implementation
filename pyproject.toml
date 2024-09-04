@@ -18,8 +18,8 @@ line-length = 120
 target-version = "py312"
 exclude = [
     "pyproject.toml",
-    "src/**/tests/**",
-    "src/**/migrations/**",
+    "src/**/tests/*",
+    "src/**/migrations/*",
     ".idea/**",
     "src/manage.py",
 ]
@@ -40,8 +40,12 @@ ignore = [
 select = ["ALL", "W2", "I"]
 exclude = [
     "pyproject.toml",
-    "src/myapp/tests/*",
-    "src/myapp/migrations/*",
+    "src/**/tests/**",
+    "src/**/migrations/**",
     ".idea/**",
     "src/manage.py",
 ]
+
+[tool.bandit]
+exclude = ["src/**/tests/**", "src/**/migrations/*"]
+skips = ["B106"]

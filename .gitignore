@@ -3,6 +3,8 @@ __pycache__/
 data/
 
 env
+config.mk
+
 
 src/staticfiles/*
 /.idea/dataSources.xml

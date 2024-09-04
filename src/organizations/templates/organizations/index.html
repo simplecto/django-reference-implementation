@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Organizations</h1>
+
+    <p>
+        <a href="{% url "organizations:create_organization" %}" title="Create a new organization">Create a new organization</a>
+    </p>
+
+    {% if organizations.count > 0 %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Organization Name</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for org in organizations %}
+                <tr>
+                    <td><a href="{% url "organizations:detail" slug=org.slug %}" title="See details">{{ org.name }}</a></td>
+                    <td>{{ org.role }}</td>
+                </tr>
+            {% endfor %}
+    </table>
+    {% else %}
+        <p>You are not a member of any organizations yet.</p>
+    {% endif %}
+{% endblock %}

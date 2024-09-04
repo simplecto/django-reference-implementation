@@ -17,7 +17,7 @@ def index(request: HttpRequest) -> HttpResponse:
     if test_flash:
         messages.success(request, "This is a test flash message.")
 
-    return render(request, "home.html")
+    return render(request, "myapp/home.html")
 
 
 def health_check(request: HttpRequest) -> HttpResponse:  # noqa: ARG001
