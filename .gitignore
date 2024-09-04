@@ -4,7 +4,7 @@ data/
 
 env
 config.mk
-
+*.dump
 
 src/staticfiles/*
 /.idea/dataSources.xml

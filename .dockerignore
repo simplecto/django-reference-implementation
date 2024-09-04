@@ -5,3 +5,4 @@ env
 .idea/
 data/
 src/staticfiles/*
+*.dump

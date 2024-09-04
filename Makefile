@@ -1,3 +1,5 @@
+include config.mk
+
 ##########################################################################
 # MENU
 ##########################################################################
@@ -40,3 +42,11 @@ dev-stop: ## Stop the development environment
 .PHONY: dev-restart-django
 dev-restart-django: ## Restart the Django service
 	docker compose up -d --force-recreate django
+
+.PHONY: snapshot-local-db
+snapshot-local-db: ## Create a snapshot of the local database
+	docker compose exec postgres pg_dump -U postgres -Fc django_reference > django_reference.dump
+
+.PHONY: restore-local-db
+restore-local-db: ## Restore the local database from a snapshot
+	docker compose exec -T postgres pg_restore -U postgres -d django_reference < django_reference.dump
