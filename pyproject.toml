@@ -18,8 +18,8 @@ line-length = 120
 target-version = "py312"
 exclude = [
     "pyproject.toml",
-    "src/myapp/tests/*",
-    "src/myapp/migrations/*",
+    "src/**/tests/**",
+    "src/**/migrations/**",
     ".idea/**",
     "src/manage.py",
 ]
