@@ -1,30 +1,41 @@
 """Settings for the project."""
 
-import os
 from pathlib import Path
 
-import dj_database_url
-import dj_email_url
-import django_cache_url
+import environ
 import sentry_sdk
-from dotenv import find_dotenv, load_dotenv
 
-load_dotenv(find_dotenv(os.getenv("ENV_FILE", "env")))
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 
-DEBUG = os.environ["DEBUG"].lower() in ["true", "1", "yes", "t", "y"]
-SECRET_KEY = os.environ["SECRET_KEY"]
-BASE_URL = os.environ["BASE_URL"]
+BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Read .env file if it exists
+env_file = BASE_DIR / "../env"
+if env_file.exists():
+    environ.Env.read_env(env_file)
 
-if os.environ["DEV_ENV"] in ["production"]:
-    sentry_sdk.init(dsn=os.environ["SENTRY_DSN"])
+DEBUG = env("DEBUG")
+SECRET_KEY = env("SECRET_KEY")
+BASE_URL = env("BASE_URL")
+
+if env("DEV_ENV") in ["production"]:
+    sentry_sdk.init(dsn=env("SENTRY_DSN"))
 
 # You can explicitly turn this off in your env file
-SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", False)
+SECURE_SSL_REDIRECT = env("SECURE_SSL_REDIRECT", default=False)
 
 CSRF_TRUSTED_ORIGINS = [BASE_URL]
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+# CONFIGURATION for django-storages
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
+AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL")
+AWS_S3_USE_SSL = env("AWS_S3_USE_SSL")
 
 ALLOWED_HOSTS = ["*"]
 
@@ -84,13 +95,14 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 # Parse database connection url strings like psql://user:pass@127.0.0.1:8458/db
-DATABASES = {
-    # read os.environ['DATABASE_URL'] and raises ImproperlyConfigured exception
-    # if not found
-    "default": dj_database_url.config()
-}
+DATABASES = {"default": env.db()}
 
-CACHES = {"default": django_cache_url.config()}
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cache",
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -120,7 +132,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-EMAIL_CONFIG = dj_email_url.config()
+EMAIL_CONFIG = env.email_url("EMAIL_URL")
+vars().update(EMAIL_CONFIG)
+
 
 """
 STATIC ASSET HANDLING
