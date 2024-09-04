@@ -25,5 +25,21 @@
             <li><a href="{% provider_login_url provider.id %}">Connect {{ provider.name }}</a></li>
         {% endfor %}
     </ul>
+
+    <h3>Invitations</h3>
+
+    {% if user.invitations_received.count > 0 %}
+    <ul>
+        {% for invitation in user.invitations_received.all %}
+            <li>
+                {{ invitation.invited_by }} invited you to join {{ invitation.organization }}
+                <a href="{% url 'organizations:accept_invite' token=invitation.invite_key %}">Accept</a>
+                <a href="{% url 'organizations:decline_invite' token=invitation.invite_key %}">Decline</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>You have no pending invitations.</p>
+    {% endif %}
 </div>
 {% endblock %}

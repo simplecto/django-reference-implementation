@@ -43,6 +43,53 @@ class Organization(models.Model):
             self.slug = slugify(self.name).lower()
         super().save(*args, **kwargs)
 
+    def has_admin_permission(self, user: User) -> bool:
+        """Return True if the user is an owner of the organization.
+
+        Args:
+        ----
+            user: User object.
+
+        Returns:
+        -------
+            bool
+
+        """
+        return self.members.filter(
+            user=user, role=OrganizationMember.RoleChoices.OWNER
+        ).exists()
+
+    def is_owner(self, user: User) -> bool:
+        """Return True if the user is an owner of the organization.
+
+        Args:
+        ----
+            user: User object.
+
+        Returns:
+        -------
+            bool
+
+        """
+        return self.members.filter(
+            user=user, role=OrganizationMember.RoleChoices.OWNER
+        ).exists()
+
+    @property
+    def owners(self) -> models.QuerySet:
+        """Return the owners of the organization."""
+        return self.members.filter(role=OrganizationMember.RoleChoices.OWNER)
+
+    @property
+    def admins(self) -> models.QuerySet:
+        """Return the admins of the organization."""
+        return self.members.filter(role=OrganizationMember.RoleChoices.ADMIN)
+
+    @property
+    def members(self) -> models.QuerySet:
+        """Return the members of the organization."""
+        return self.members.filter(role=OrganizationMember.RoleChoices.MEMBER)
+
 
 class OrganizationMember(models.Model):
     """An organization member model."""
@@ -91,12 +138,17 @@ class OrganizationMember(models.Model):
         """Return True if the user can admin the organization."""
         return self.role in (self.RoleChoices.OWNER, self.RoleChoices.ADMIN)
 
+    @property
+    def is_owner(self) -> bool:
+        """Return True if the user is an owner of the organization."""
+        return self.role == self.RoleChoices.OWNER
+
 
 class Invitation(models.Model):
     """An invitation model."""
 
     organization = models.ForeignKey(
-        Organization, on_delete=models.CASCADE, related_name="org_invitations"
+        Organization, on_delete=models.CASCADE, related_name="invitations"
     )
     invited_by = models.ForeignKey(
         User,
@@ -109,6 +161,7 @@ class Invitation(models.Model):
         on_delete=models.CASCADE,
         related_name="invitations_received",
         null=True,
+        blank=True,
     )
     email = models.EmailField()
     role = models.CharField(
@@ -118,6 +171,7 @@ class Invitation(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     accepted_at = models.DateTimeField(null=True, blank=True)
+    email_sent = models.BooleanField(default=False)
     invite_key = models.UUIDField(unique=True)
 
     class Meta:
@@ -151,3 +205,8 @@ class Invitation(models.Model):
             self.user = User.objects.filter(email=self.email).first()
 
         super().save(*args, **kwargs)
+
+    @property
+    def user_exists(self) -> bool:
+        """Return True if the user exists."""
+        return self.user is not None

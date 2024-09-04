@@ -100,7 +100,7 @@ DATABASES = {"default": env.db()}
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-        "LOCATION": "cache",
+        "LOCATION": "mycachetable",
     }
 }
 # Password validation

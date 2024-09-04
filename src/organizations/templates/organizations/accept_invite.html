@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if request.user.is_anonymous %}
+        You are anon
+    {% endif %}
+
+    {% if invite.user_exists %}
+    You think you exist?
+    {% else %}
+    boom
+
+    {% endif %}
+{%  endblock %}

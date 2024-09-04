@@ -24,6 +24,7 @@ class OrganizationMemberAdmin(admin.ModelAdmin):
 class InvitationAdmin(admin.ModelAdmin):
     """Invitation Admin."""
 
-    list_display = ("organization", "email", "role")
-    list_filter = ("role", "organization")
+    list_display = ("organization", "email", "role", "email_sent")
+    list_filter = ("role", "organization", "email_sent")
     search_fields = ("organization__name", "email")
+    list_editable = ("email_sent",)

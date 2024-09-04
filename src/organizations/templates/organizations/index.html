@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load organization_extras %}
 {% block content %}
     <h1>Organizations</h1>
 
@@ -19,7 +19,8 @@
             {% for org in organizations %}
                 <tr>
                     <td><a href="{% url "organizations:detail" slug=org.slug %}" title="See details">{{ org.name }}</a></td>
-                    <td>{{ org.role }}</td>
+                    <!-- users role in the organization -->
+                    <td>{{ org|get_user_role:request.user }}</td>
                 </tr>
             {% endfor %}
     </table>
