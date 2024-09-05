@@ -1,6 +1,7 @@
 """Forms for the organizations app."""
 
 from django import forms
+from django.contrib.auth.password_validation import validate_password
 
 from organizations.models import Invitation, Organization, OrganizationMember
 
@@ -52,21 +53,17 @@ class OrganizationInviteForm(forms.ModelForm):
 
         return role
 
-    def clean_invited_by(self) -> None:
-        """Validate that the requesting user is an owner of the organization."""
-        organization = self.instance.organization
-        user = self.instance.invited_by
-
-        if not organization.has_admin_permission(user):
-            msg = "Only admins can invite users."
-            raise forms.ValidationError(msg)
-
     # validate that the requesting user is an owner of the organization and that the email is not already a member
     def clean(self) -> None:
         """Validate that the requesting user is an owner of the organization."""
         cleaned_data = super().clean()
         organization = self.instance.organization
+        user = self.instance.invited_by
         email = cleaned_data.get("email")
+
+        if not organization.has_admin_permission(user):
+            msg = "Only admins can invite users."
+            raise forms.ValidationError(msg)
 
         if organization.members.filter(user__email=email).exists():
             msg = "User is already a member of this organization."
@@ -96,5 +93,16 @@ class AcceptInviteChangePasswordForm(forms.Form):
         if password != confirm_password:
             msg = "Passwords do not match."
             raise forms.ValidationError(msg)
+
+        # blank is the same as null and not allowed
+        if not password:
+            msg = "Password is required."
+            raise forms.ValidationError(msg)
+
+        # Validate password using Django's built-in validators
+        try:
+            validate_password(password)
+        except forms.ValidationError as e:
+            raise forms.ValidationError(e.messages) from e
 
         return cleaned_data

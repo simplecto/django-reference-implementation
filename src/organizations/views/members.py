@@ -140,6 +140,7 @@ def accept_invite(request: HttpRequest, token: str) -> HttpResponse:
     # the user and the invited user must match
     if user != invite.user and user.is_authenticated:
         messages.error(request, "You are not authorized to accept this invite.")
+        return HttpResponse(status=403)
 
     if user.is_authenticated and user == invite.user:
         # accept the invite
@@ -160,7 +161,7 @@ def accept_invite(request: HttpRequest, token: str) -> HttpResponse:
         user = User.objects.create_user(
             email=invite.email,
             username=invite.email,
-            password=uuid.uuid4().hex,
+            password=str(uuid.uuid4()),
         )
 
         # accept the invite
@@ -184,6 +185,12 @@ def accept_invite(request: HttpRequest, token: str) -> HttpResponse:
             "organizations:accept_invite_change_password", token=invite.invite_key
         )
 
+    if user.is_anonymous and invite.user_exists:
+        messages.error(
+            request, "An account with this email already exists. Login to continue."
+        )
+        return redirect("account_login")
+
     messages.error(request, "You are not authorized to accept this invite.")
 
     return render(request, "organizations/accept_invite.html", {"invite": invite})
@@ -202,21 +209,21 @@ def decline_invite(request: HttpRequest, token: str) -> HttpResponse:
         HttpResponse object.
 
     """
-    user = request.user
-
     invite = get_object_or_404(Invitation, invite_key=token)
 
     if invite.accepted_at:
         messages.error(request, "This invite is no longer valid.")
         return HttpResponse(status=403)
 
-    # the user and the invited user must match
-    if user != invite.user and user.is_authenticated:
-        messages.error(request, "You are not authorized to accept this invite.")
+    if request.method == "POST":
+        invite.delete()
+        return render(request, "organizations/decline_invite_success.html")
 
-    return HttpResponse(status=200)
+    context = {"invite": invite}
+    return render(request, "organizations/decline_invite.html", context)
 
 
+@login_required
 def accept_invite_change_password(request: HttpRequest, token: str) -> HttpResponse:
     """Change password after accepting an invite.
 
@@ -232,6 +239,7 @@ def accept_invite_change_password(request: HttpRequest, token: str) -> HttpRespo
     """
     user = request.user
     get_object_or_404(Invitation, invite_key=token)
+    status = 200
 
     if request.method == "POST":
         form = AcceptInviteChangePasswordForm(request.POST)
@@ -241,9 +249,15 @@ def accept_invite_change_password(request: HttpRequest, token: str) -> HttpRespo
 
             messages.success(request, "Password set successfully.")
             return redirect("organizations:index")
+
+        messages.error(request, "An error occurred. Please try again.")
+        status = 400
     else:
         form = AcceptInviteChangePasswordForm()
 
     return render(
-        request, "organizations/accept_invite_change_password.html", {"form": form}
+        request,
+        "organizations/accept_invite_change_password.html",
+        {"form": form},
+        status=status,
     )

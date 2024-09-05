@@ -198,7 +198,7 @@ class Invitation(models.Model):
 
         """
         if not self.invite_key:
-            self.invite_key = uuid.uuid4().hex
+            self.invite_key = str(uuid.uuid4())
 
         # if user email matches the email of the user, set the user field
         if self.user is None:
