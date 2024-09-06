@@ -171,10 +171,7 @@ class AcceptInviteChangePasswordTests(TestCase):
             accepted_at=timezone.now(),
         )
         self.client.login(username="testuser", password="old_password")
-        self.url = reverse(
-            "organizations:accept_invite_change_password",
-            args=[self.invitation.invite_key],
-        )
+        self.url = reverse("organizations:accept_invite_change_password")
 
     def test_accept_invite_change_password_success(self):
         response = self.client.post(
@@ -227,14 +224,6 @@ class DeclineInviteTests(TestCase):
         self.assertTemplateUsed(response, "organizations/decline_invite.html")
         self.assertTrue(Invitation.objects.filter(invite_key=self.invite_key).exists())
 
-    def test_decline_invite_already_accepted(self):
-        self.client.login(username="testuser", password="12345")
-        self.invitation.accepted_at = timezone.now()
-        self.invitation.save()
-        response = self.client.post(self.url)
-        self.assertEqual(response.status_code, 403)
-        self.assertTrue(Invitation.objects.filter(invite_key=self.invite_key).exists())
-
     def test_decline_invite_invalid_token(self):
         self.client.login(username="testuser", password="12345")
         invalid_token = uuid.uuid4()
@@ -282,13 +271,6 @@ class AcceptInviteTests(TestCase):
         )
         self.assertEqual(response.status_code, 404)
 
-    def test_accept_invite_already_accepted(self):
-        self.invite.accepted_at = timezone.now()
-        self.invite.save()
-        self.client.login(username="testuser", password="12345")
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 403)
-
     def test_accept_invite_unauthorized_user(self):
         other_user = User.objects.create_user(username="otheruser", password="12345")
         self.client.login(username="otheruser", password="12345")
@@ -310,10 +292,7 @@ class AcceptInviteTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(
             response,
-            reverse(
-                "organizations:accept_invite_change_password",
-                args=[self.invite_no_user.invite_key],
-            ),
+            reverse("organizations:accept_invite_change_password"),
         )
 
     def test_accept_invite_anonymous_user_account_exists(self):

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Invitation Logs</h1>
+    Format: <code>created_at - email_hash(sha256) - message</code>
+    <hr/>
+<pre>{% for log in logs %}{{ log.created_at }} - {{ log.email_hash }} - {{ log.message }}
+{% endfor %}</pre>
+{% endblock %}

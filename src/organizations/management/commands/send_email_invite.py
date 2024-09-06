@@ -3,6 +3,7 @@ from django.core.mail import send_mail
 
 from myapp.management.commands._base import BaseWorkerCommand
 from organizations.models import Invitation
+from organizations.services import invite_log
 
 
 class Command(BaseWorkerCommand):
@@ -36,3 +37,4 @@ The Firm.
 
             invite.email_sent = True
             invite.save()
+            invite_log(invite, "Email sent.")

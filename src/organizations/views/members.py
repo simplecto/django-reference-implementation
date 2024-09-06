@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 
 from organizations.forms import (
@@ -14,6 +13,7 @@ from organizations.forms import (
     OrganizationInviteForm,
 )
 from organizations.models import Invitation, OrganizationMember
+from organizations.services import invite_log
 
 
 @login_required
@@ -99,13 +99,13 @@ def invite_user(request: HttpRequest, slug: str) -> HttpResponse:
             role = form.cleaned_data["role"]
 
             # create the invite record
-            Invitation.objects.create(
+            invite = Invitation.objects.create(
                 organization=org_member.organization,
                 invited_by=request.user,
                 email=email,
                 role=role,
             )
-
+            invite_log(invite, "Invite created.")
             messages.success(request, f"Invited {email} to the organization.")
             return redirect("organizations:detail", slug=slug)
 
@@ -133,24 +133,20 @@ def accept_invite(request: HttpRequest, token: str) -> HttpResponse:
 
     invite = get_object_or_404(Invitation, invite_key=token)
 
-    if invite.accepted_at:
-        messages.error(request, "This invite is no longer valid.")
-        return HttpResponse(status=403)
-
     # the user and the invited user must match
     if user != invite.user and user.is_authenticated:
         messages.error(request, "You are not authorized to accept this invite.")
         return HttpResponse(status=403)
 
     if user.is_authenticated and user == invite.user:
-        # accept the invite
+        # accept the invite (eg create the organization member record and delete the invite)
         OrganizationMember.objects.create(
             organization=invite.organization,
             user=user,
             role=invite.role,
         )
-        invite.accepted_at = timezone.now()
-        invite.save()
+        invite_log(invite, "Invite accepted. Existing user.")
+        invite.delete()
 
         messages.success(request, "You have joined the organization.")
         return redirect("organizations:detail", slug=invite.organization.slug)
@@ -170,8 +166,8 @@ def accept_invite(request: HttpRequest, token: str) -> HttpResponse:
             user=user,
             role=invite.role,
         )
-        invite.accepted_at = timezone.now()
-        invite.save()
+        invite_log(invite, "Invite accepted. Created new user.")
+        invite.delete()
 
         # log the user in
         backend = "django.contrib.auth.backends.ModelBackend"
@@ -181,9 +177,7 @@ def accept_invite(request: HttpRequest, token: str) -> HttpResponse:
         messages.success(
             request, "You have joined the organization. Please set your password."
         )
-        return redirect(
-            "organizations:accept_invite_change_password", token=invite.invite_key
-        )
+        return redirect("organizations:accept_invite_change_password")
 
     if user.is_anonymous and invite.user_exists:
         messages.error(
@@ -211,11 +205,8 @@ def decline_invite(request: HttpRequest, token: str) -> HttpResponse:
     """
     invite = get_object_or_404(Invitation, invite_key=token)
 
-    if invite.accepted_at:
-        messages.error(request, "This invite is no longer valid.")
-        return HttpResponse(status=403)
-
     if request.method == "POST":
+        invite_log(invite, "Invite declined.")
         invite.delete()
         return render(request, "organizations/decline_invite_success.html")
 
@@ -224,7 +215,7 @@ def decline_invite(request: HttpRequest, token: str) -> HttpResponse:
 
 
 @login_required
-def accept_invite_change_password(request: HttpRequest, token: str) -> HttpResponse:
+def accept_invite_change_password(request: HttpRequest) -> HttpResponse:
     """Change password after accepting an invite.
 
     Args:
@@ -238,7 +229,6 @@ def accept_invite_change_password(request: HttpRequest, token: str) -> HttpRespo
 
     """
     user = request.user
-    get_object_or_404(Invitation, invite_key=token)
     status = 200
 
     if request.method == "POST":

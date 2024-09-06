@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Invitation, Organization, OrganizationMember
+from .models import Invitation, InvitationLog, Organization, OrganizationMember
 
 
 @admin.register(Organization)
@@ -28,3 +28,13 @@ class InvitationAdmin(admin.ModelAdmin):
     list_filter = ("role", "organization", "email_sent")
     search_fields = ("organization__name", "email")
     list_editable = ("email_sent",)
+
+
+@admin.register(InvitationLog)
+class InvitationLogAdmin(admin.ModelAdmin):
+    """Invitation Log Admin."""
+
+    list_display = ("organization", "email_hash", "message", "created_at")
+    search_fields = ("organization__name", "email_hash")
+    list_filter = ("organization",)
+    readonly_fields = ("organization", "email_hash", "message", "created_at")

@@ -4,6 +4,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from organizations.forms import (
+    DeleteOrganizationForm,
     OrganizationForm,
 )
 from organizations.models import Organization, OrganizationMember
@@ -88,3 +89,76 @@ def detail(request: HttpRequest, slug: str) -> HttpResponse:
     }
 
     return render(request, "organizations/detail.html", context)
+
+
+@login_required
+def invite_logs(request: HttpRequest, slug: str) -> HttpResponse:
+    """View invitation logs for an organization.
+
+    Args:
+    ----
+        request: HttpRequest object.
+        slug: Slug of the organization.
+
+    Returns:
+    -------
+        HttpResponse object.
+
+    """
+    org_member = get_object_or_404(
+        OrganizationMember, organization__slug=slug, user=request.user
+    )
+
+    if not org_member.can_admin:
+        messages.error(request, "You do not have permission to view invite logs.")
+        return HttpResponse(status=403)
+
+    logs = org_member.organization.invitation_logs.all()
+
+    context = {
+        "organization": org_member.organization,
+        "logs": logs,
+    }
+
+    return render(request, "organizations/invite_logs.html", context)
+
+
+def delete_organization(request: HttpRequest, slug: str) -> HttpResponse:
+    """Delete an organization.
+
+    Args:
+    ----
+        request: HttpRequest object.
+        slug: Slug of the organization.
+
+    Returns:
+    -------
+        HttpResponse object.
+
+    """
+    org_member = get_object_or_404(
+        OrganizationMember, organization__slug=slug, user=request.user
+    )
+
+    if not org_member.is_owner:
+        messages.error(
+            request, "You do not have permission to delete this organization."
+        )
+        return HttpResponse(status=403)
+
+    if request.method == "POST":
+        form = DeleteOrganizationForm(request.POST)
+        if form.is_valid():
+            org_member.organization.delete()
+            messages.success(request, "Organization deleted successfully.")
+            return redirect("profile")
+
+        return redirect("profile")
+
+    form = DeleteOrganizationForm()
+    context = {
+        "organization": org_member.organization,
+        "form": form,
+    }
+
+    return render(request, "organizations/delete_organization.html", context)

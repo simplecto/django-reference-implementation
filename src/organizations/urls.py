@@ -12,9 +12,15 @@ urlpatterns = [
     path("<slug:slug>/", organizations.detail, name="detail"),
     path("<slug:slug>/invite/", members.invite_user, name="invite"),
     path("<slug:slug>/remove-member/", members.remove_member, name="remove_member"),
+    path("<slug:slug>/invite-logs/", organizations.invite_logs, name="invite_logs"),
+    path(
+        "<slug:slug>/delete/",
+        organizations.delete_organization,
+        name="delete_organization",
+    ),
     path("accept-invite/<uuid:token>/", members.accept_invite, name="accept_invite"),
     path(
-        "accept-invite/<uuid:token>/change-password/",
+        "accept-invite/change-password/",
         members.accept_invite_change_password,
         name="accept_invite_change_password",
     ),

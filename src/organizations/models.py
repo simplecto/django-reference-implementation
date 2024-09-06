@@ -210,3 +210,29 @@ class Invitation(models.Model):
     def user_exists(self) -> bool:
         """Return True if the user exists."""
         return self.user is not None
+
+
+class InvitationLog(models.Model):
+    """An invitation log model."""
+
+    organization = models.ForeignKey(
+        Organization,
+        on_delete=models.CASCADE,
+        related_name="invitation_logs",
+        editable=False,
+    )
+    email_hash = models.CharField(
+        max_length=255, help_text="SHA256 Hash of the email address.", editable=False
+    )
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    message = models.TextField(blank=True, default="", editable=False)
+
+    class Meta:
+        """Meta options for the invitation log model."""
+
+        verbose_name = "invitation log"
+        verbose_name_plural = "invitation logs"
+
+    def __str__(self) -> str:
+        """Return the email of the invitation log."""
+        return f"{self.organization.name}: {self.email_hash}"
