@@ -1,15 +1,28 @@
 {% extends "organizations/base.html" %}
 
 {% block content %}
-    <h1>{{ organization.name }}</h1>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>{{ organization.name }}</h1>
 
-    {# invite members link #}
-    {% if org_member.can_admin %}
-        <p>
-            <a href="{% url "organizations:invite" slug=organization.slug %}" title="Invite someone to organization">Invite someone to organization</a>
-        </p>
-    {% endif %}
+        {% if org_member.role != 'OWNER' %}
+        <form action="{% url "organizations:remove_member" slug=organization.slug %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{ request.user.id }}">
+            <button type="submit" class="btn btn-danger">Leave organization</button>
+        </form>
+        {% endif %}
+        {# invite members link #}
+        {% if org_member.can_admin %}
+            <a class="btn btn-primary" href="{% url "organizations:invite" slug=organization.slug %}" title="Invite someone to organization">Invite someone to join</a>
+            <a class="btn btn-secondary" href="{% url "organizations:invite_logs" slug=organization.slug %}" title="View invitation logs">View invitation logs</a>
+        {% endif %}
 
+        {% if org_member.is_owner %}
+            <a class="btn btn-danger" href="{% url "organizations:delete_organization" slug=organization.slug %}" title="Delete organization">Delete organization</a>
+        {% endif %}
+    </div>
+
+    <hr/>
     {# show members #}
     <h2>Membership roster</h2>
     <table class="table">
@@ -53,4 +66,35 @@
                 </tr>
             {% endfor %}
     </table>
+
+    {% if org_member.can_admin %}
+    <h2>Pending Invitations</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invite in organization.invitations.all %}
+                <tr>
+                    <td>{{ invite.email }}</td>
+                    <td>{{ invite.role }}</td>
+                    <td>
+                        <a href="#" title="Cancel invitation">Cancel</a> |
+                        <a href="#" title="Resend invitation">Resend</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No pending invitations</td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    {% endif %}
+
 {% endblock %}

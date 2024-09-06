@@ -106,3 +106,19 @@ class AcceptInviteChangePasswordForm(forms.Form):
             raise forms.ValidationError(e.messages) from e
 
         return cleaned_data
+
+
+class DeleteOrganizationForm(forms.Form):
+    """Form to delete an organization."""
+
+    confirm = forms.TextInput()
+
+    def clean_confirm(self) -> str:
+        """Validate that the user has confirmed the deletion."""
+        confirm = self.cleaned_data["confirm"]
+
+        if confirm != "DELETE":
+            msg = "You must type 'DELETE' to confirm deletion."
+            raise forms.ValidationError(msg)
+
+        return confirm

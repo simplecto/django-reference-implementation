@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Delete Organization</h1>
+
+    <h2>Danger Zone!!</h2>
+    <div>
+        <p>This is kind of a big deal. You will probably lose all the things connected to or under management
+        of this organization. That can include configurations, files, and your deepest, darkest, confessions
+        that you squirreled away here. On second thought.... do it. Let no one else see your shame. </p>
+        <form action="{% url "organizations:delete_organization" slug=organization.slug %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete organization</button>
+        </form>
+
+    </div>
+    <h3>Transfer Ownership</h3>
+        <p>If you want to transfer ownership:</p>
+        <ol>
+            <li>Add someone as an OWNER to the organization.</li>
+            <li>Remove yourself from the organization.</li>
+            <li>DONE.</li>
+        </ol>
+
+
+{% endblock %}

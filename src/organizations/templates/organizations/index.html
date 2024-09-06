@@ -6,9 +6,7 @@
         <a class="btn btn-sm btn-success" href="{% url "organizations:create_organization" %}" title="Create a new organization">Create org</a>
     </div>
 
-    <p>
-        <a href="{% url "organizations:create_organization" %}" title="Create a new organization">Create a new organization</a>
-    </p>
+    <hr/>
 
     {% if organizations.count > 0 %}
     <table class="table">
