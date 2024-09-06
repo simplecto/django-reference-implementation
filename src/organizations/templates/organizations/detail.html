@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "organizations/base.html" %}
 
 {% block content %}
     <h1>{{ organization.name }}</h1>
@@ -11,7 +11,7 @@
     {% endif %}
 
     {# show members #}
-
+    <h2>Membership roster</h2>
     <table class="table">
         <thead>
             <tr>

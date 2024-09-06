@@ -1,30 +1,24 @@
-{% extends "base.html" %}
+{% extends "organizations/base.html" %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Create Organization</h1>
-            {#  show form errors #}
-            {% if form.errors %}
-                <div class="alert alert-danger">
-                    <strong>Oops! We have a problem:</strong>
-                    <ul>
-                        {% for field in form %}
-                            {% for error in field.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-            {#  show form #}
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Create</button>
-            </form>
-        </div>
+<h1>Create Organization</h1>
+{#  show form errors #}
+{% if form.errors %}
+    <div class="alert alert-danger">
+        <strong>Oops! We have a problem:</strong>
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
     </div>
-</div>
+{% endif %}
+{#  show form #}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
 {% endblock %}

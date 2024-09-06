@@ -1,0 +1,46 @@
+{% load static solo_tags %}{% get_solo 'myapp.SiteConfiguration' as site_config %}<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{% block meta_title %}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{% static 'site.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
+
+    <script src="{% static 'site.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/htmx.js' %}"></script>
+
+    {{ site_config.js_head|safe }}
+    {% block stylesheets %}{% endblock %}
+    {% block javascript %}{% endblock %}
+</head>
+
+<body>
+    {% include "_header.html" %}
+    {% include "_alerts.html" %}
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-2">
+                <nav class="list-group list-group-flush p-3">
+                    <a href="{% url 'organizations:index' %}" class="list-group-item list-group-item-action bg-light">Organizations</a>
+                    <a href="{% url 'organizations:create_organization' %}" class="list-group-item list-group-item-action bg-light">Create Organization</a>
+
+                </nav>
+            </aside>
+            <div class="col-10">
+                {% include "organizations/_breadcrumb.html" %}
+                <main class="col-10">
+                    {% block content %}{% endblock %}
+                </main>
+            </div>
+        </div>
+    </div>
+    {% include "_footer.html" %}
+    {{ site_config.js_body|safe }}
+</body>
+
+</html>
