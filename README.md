@@ -108,6 +108,7 @@ If this one is not to your taste, then there are others to consider:
 ## Paid
   * [SaaS Pegasus](https://www.saaspegasus.com/)
   * [SlimSaaS](https://slimsaas.com/)
+  * [Sneat](https://themeselection.com/item/sneat-dashboard-pro-django/)
 
 *NOTE: These are not endorsements of these projects. Just examples of other
 ways to get started with Django.*
