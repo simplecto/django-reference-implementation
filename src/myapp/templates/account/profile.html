@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load socialaccount %}
+{% load allauth socialaccount %}
 {% providers_media_js %}
 {% get_social_accounts user as accounts %}
 {% get_providers as socialaccount_providers %}
@@ -10,25 +10,13 @@
     <p>Welcome, {{ user.username }}!</p>
 
     <h3>Connected Accounts</h3>
-    <ul>
-        {% for account in user.socialaccount_set.all %}
-            <li>
-                {{ account.provider }}
-                <a href="{% url 'socialaccount_connections' %}?action=disconnect&account={{ account.pk }}">Disconnect</a>
-            </li>
-        {% endfor %}
-    </ul>
+
 
     <h3>Connect New Account</h3>
-    <ul>
-        {% for provider in socialaccount_providers %}
-            <li><a href="{% provider_login_url provider.id %}">Connect {{ provider.name }}</a></li>
-        {% endfor %}
-    </ul>
+    {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
 
     <h3>Invitations</h3>
 
-    {% if user.invitations_received.count > 0 %}
     <ul>
         {% for invitation in user.invitations_received.all %}
             <li>
@@ -36,10 +24,10 @@
                 <a href="{% url 'organizations:accept_invite' token=invitation.invite_key %}">Accept</a>
                 <a href="{% url 'organizations:decline_invite' token=invitation.invite_key %}">Decline</a>
             </li>
+        {% empty %}
+            <div class="alert alert-info">You have no pending invitations.</div>
         {% endfor %}
     </ul>
-    {% else %}
-    <p>You have no pending invitations.</p>
-    {% endif %}
+
 </div>
 {% endblock %}

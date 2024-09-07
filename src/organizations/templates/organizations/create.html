@@ -1,4 +1,5 @@
 {% extends "organizations/base.html" %}
+{% load django_bootstrap5 %}
 
 {% block content %}
 <h1>Create Organization</h1>
@@ -16,9 +17,9 @@
     </div>
 {% endif %}
 {#  show form #}
-<form method="post">
+<form method="post" class="form">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Create</button>
+    {% bootstrap_form form %}
+    {% bootstrap_button button_type="submit" content="Create" %}
 </form>
 {% endblock %}

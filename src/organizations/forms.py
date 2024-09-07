@@ -111,7 +111,7 @@ class AcceptInviteChangePasswordForm(forms.Form):
 class DeleteOrganizationForm(forms.Form):
     """Form to delete an organization."""
 
-    confirm = forms.TextInput()
+    confirm = forms.CharField()
 
     def clean_confirm(self) -> str:
         """Validate that the user has confirmed the deletion."""
