@@ -12,14 +12,17 @@
         </form>
         {% endif %}
         {# invite members link #}
-        {% if org_member.can_admin %}
-            <a class="btn btn-primary" href="{% url "organizations:invite" slug=organization.slug %}" title="Invite someone to organization">Invite someone to join</a>
-            <a class="btn btn-secondary" href="{% url "organizations:invite_logs" slug=organization.slug %}" title="View invitation logs">View invitation logs</a>
-        {% endif %}
+        <div class="btn-group" role="group">
 
-        {% if org_member.is_owner %}
-            <a class="btn btn-danger" href="{% url "organizations:delete_organization" slug=organization.slug %}" title="Delete organization">Delete organization</a>
-        {% endif %}
+            {% if org_member.can_admin %}
+                <a class="btn btn-sm btn-outline-primary" href="{% url "organizations:invite" slug=organization.slug %}" title="Invite someone to organization">Invite to join</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url "organizations:invite_logs" slug=organization.slug %}" title="View invitation logs">View invitation logs</a>
+            {% endif %}
+
+            {% if org_member.is_owner %}
+                <a class="btn btn-sm btn-outline-danger" href="{% url "organizations:delete_organization" slug=organization.slug %}" title="Delete organization">Delete organization</a>
+            {% endif %}
+        </div>
     </div>
 
     <hr/>
