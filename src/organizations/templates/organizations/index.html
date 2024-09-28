@@ -1,12 +1,15 @@
 {% extends "organizations/base.html" %}
 {% load organization_extras %}
-{% block content %}
-    <div class="d-flex justify-content-between align-items-center">
-        <h1>Organizations</h1>
-        <a class="btn btn-sm btn-success" href="{% url "organizations:create_organization" %}" title="Create a new organization">Create org</a>
-    </div>
 
-    <hr/>
+{% block h1 %}Your Organizations{% endblock %}
+
+{% block breadcrumb_title %}Your organizations{% endblock %}
+
+{% block page_actions %}
+<a class="btn btn-sm btn-success" href="{% url "organizations:create_organization" %}" title="Create a new organization">Create org</a>
+{% endblock %}
+
+{% block page_content %}
 
     {% if organizations.count > 0 %}
     <table class="table">

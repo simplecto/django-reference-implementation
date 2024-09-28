@@ -1,25 +1,34 @@
 {% extends "organizations/base.html" %}
 {% load django_bootstrap5 %}
 
-{% block content %}
-<h1>Create Organization</h1>
-{#  show form errors #}
-{% if form.errors %}
-    <div class="alert alert-danger">
-        <strong>Oops! We have a problem:</strong>
-        <ul>
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <li>{{ error }}</li>
+{% block h1 %}Create Organization{% endblock %}
+
+{% block breadcrumb_title %}Create Organization{% endblock %}
+
+{% block page_content %}
+
+    {#  show form errors #}
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>Oops! We have a problem:</strong>
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-        </ul>
+            </ul>
+        </div>
+    {% endif %}
+
+
+    {#  show form #}
+    <div class="col-6">
+        <form method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form layout="horizontal" %}
+            {% bootstrap_button button_type="submit" content="Create" %}
+        </form>
     </div>
-{% endif %}
-{#  show form #}
-<form method="post" class="form">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    {% bootstrap_button button_type="submit" content="Create" %}
-</form>
+
 {% endblock %}

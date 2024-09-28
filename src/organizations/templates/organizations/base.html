@@ -28,13 +28,33 @@
                 <nav class="list-group list-group-flush p-3">
                     <a href="{% url 'organizations:index' %}" class="list-group-item list-group-item-action bg-light">Organizations</a>
                     <a href="{% url 'organizations:create_organization' %}" class="list-group-item list-group-item-action bg-light">Create Organization</a>
-
                 </nav>
             </aside>
             <div class="col-10">
-                {% include "organizations/_breadcrumb.html" %}
+                {% block breadcrumbs %}
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url "organizations:index" %}" title="Organizations">Organizations</a></li>
+                        {% if organization %}
+                        <li class="breadcrumb-item">
+                            <a href="{% url "organizations:detail" slug=organization.slug %}" title="{{ organization.name }} details page">{{ organization.name }}</a>
+                        </li>
+                        {% endif %}
+                        <li class="breadcrumb-item active" aria-current="page">{% block breadcrumb_title %}{% endblock %}</li>
+                  </ol>
+                </nav>
+                {% endblock %}
+
                 <main class="col-10">
-                    {% block content %}{% endblock %}
+                    {% block content %}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1>{% block h1 %}{% endblock %}</h1>
+                        {% block page_actions %}{% endblock %}
+                    </div>
+                    <hr/>
+                    {% block page_content %}{% endblock %}
+
+                    {% endblock %}
                 </main>
             </div>
         </div>

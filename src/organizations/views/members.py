@@ -113,7 +113,11 @@ def invite_user(request: HttpRequest, slug: str) -> HttpResponse:
         initial = {"organization": org_member.organization, "invited_by": request.user}
         form = OrganizationInviteForm(initial=initial)
 
-    return render(request, "organizations/invite.html", {"form": form})
+    return render(
+        request,
+        "organizations/invite.html",
+        {"form": form, "organization": org_member.organization},
+    )
 
 
 def accept_invite(request: HttpRequest, token: str) -> HttpResponse:

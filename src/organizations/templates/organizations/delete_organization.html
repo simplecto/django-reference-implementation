@@ -1,8 +1,11 @@
 {% extends "organizations/base.html" %}
 {% load django_bootstrap5 %}
 
-{% block content %}
-    <h1>Delete Organization</h1>
+{% block h1 %}Delete Organization{% endblock %}
+
+{% block breadcrumb_title %}Delete Organization{% endblock %}
+
+{% block page_content %}
     <div>
 
         <div class="alert alert-warning">This is kind of a big deal. You will probably lose all the things connected to or under management

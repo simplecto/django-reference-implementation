@@ -1,7 +1,11 @@
-{% extends "base.html" %}
+{% extends "organizations/base.html" %}
 
-{% block content %}
-<h1>Invitation Logs</h1>
+{% block h1 %}Invitation Logs{% endblock %}
+
+{% block breadcrumb_title %}Invitation Logs{% endblock %}
+
+
+{% block page_content %}
     Format: <code>created_at - email_hash(sha256) - message</code>
     <hr/>
 <pre>{% for log in logs %}{{ log.created_at }} - {{ log.email_hash }} - {{ log.message }}
