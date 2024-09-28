@@ -26,7 +26,7 @@
         <div class="row">
             <aside class="col-2">
                 <nav class="list-group list-group-flush p-3">
-                    <a href="{% url 'organizations:index' %}" class="list-group-item list-group-item-action bg-light">Organizations</a>
+                    <a href="{% url 'organizations:list' %}" class="list-group-item list-group-item-action bg-light">Organizations</a>
                     <a href="{% url 'organizations:create_organization' %}" class="list-group-item list-group-item-action bg-light">Create Organization</a>
                 </nav>
             </aside>
@@ -34,7 +34,7 @@
                 {% block breadcrumbs %}
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url "organizations:index" %}" title="Organizations">Organizations</a></li>
+                        <li class="breadcrumb-item"><a href="{% url "organizations:list" %}" title="Organizations">Organizations</a></li>
                         {% if organization %}
                         <li class="breadcrumb-item">
                             <a href="{% url "organizations:detail" slug=organization.slug %}" title="{{ organization.name }} details page">{{ organization.name }}</a>

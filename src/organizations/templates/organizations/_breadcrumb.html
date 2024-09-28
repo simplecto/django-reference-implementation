@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url "organizations:index" %}" title="Organizations">Organizations</a></li>
+        <li class="breadcrumb-item"><a href="{% url "organizations:list" %}" title="Organizations">Organizations</a></li>
         {% if organization %}
         <li class="breadcrumb-item">
             <a href="{% url "organizations:detail" slug=organization.slug %}" title="{{ organization.name }} details page">{{ organization.name }}</a>

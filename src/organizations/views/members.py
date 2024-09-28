@@ -242,7 +242,7 @@ def accept_invite_change_password(request: HttpRequest) -> HttpResponse:
             user.save()
 
             messages.success(request, "Password set successfully.")
-            return redirect("organizations:index")
+            return redirect("organizations:list")
 
         messages.error(request, "An error occurred. Please try again.")
         status = 400

@@ -14,7 +14,7 @@
                     <li class="nav-item dropdown">
                         <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">{{ request.user }}</button>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{% url 'organizations:index' %}">Organizations</a></li>
+                            <li><a class="dropdown-item" href="{% url 'organizations:list' %}">Organizations</a></li>
                             <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                             {% if request.user.is_superuser %}
                             <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>

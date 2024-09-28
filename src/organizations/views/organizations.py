@@ -1,7 +1,13 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic import ListView
 
 from organizations.forms import (
     DeleteOrganizationForm,
@@ -9,30 +15,19 @@ from organizations.forms import (
 )
 from organizations.models import Organization, OrganizationMember
 
+if TYPE_CHECKING:
+    from django.db.models import QuerySet
 
-@login_required
-def index(request: HttpRequest) -> HttpResponse:
-    """Home view.
 
-    Args:
-    ----
-        request: HttpRequest object.
+class OrganizationListView(LoginRequiredMixin, ListView):
+    """List view for organizations."""
 
-    Returns:
-    -------
-        HttpResponse object.
+    model = Organization
+    template_name = "organizations/index.html"
 
-    """
-    organizations = Organization.objects.filter(members__user=request.user)
-
-    org_form = OrganizationForm()
-
-    context = {
-        "organizations": organizations,
-        "org_form": org_form,
-    }
-
-    return render(request, "organizations/index.html", context)
+    def get_queryset(self) -> QuerySet:
+        """Get queryset for the view."""
+        return self.model.objects.filter(members__user=self.request.user)
 
 
 @login_required

@@ -11,7 +11,7 @@
 
 {% block page_content %}
 
-    {% if organizations.count > 0 %}
+    {% if object_list.count > 0 %}
     <table class="table">
         <thead>
             <tr>
@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for org in organizations %}
+            {% for org in object_list %}
                 <tr>
                     <td><a href="{% url "organizations:detail" slug=org.slug %}" title="See details">{{ org.name }}</a></td>
                     <!-- users role in the organization -->
