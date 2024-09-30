@@ -6,7 +6,7 @@ RUN pip install --no-cache-dir -r /requirements.txt
 RUN mkdir /app
 COPY src/ app/
 
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
