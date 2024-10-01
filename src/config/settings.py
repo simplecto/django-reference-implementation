@@ -3,7 +3,6 @@
 from pathlib import Path
 
 import environ
-import sentry_sdk
 
 env = environ.Env(
     # set casting, default value
@@ -20,9 +19,6 @@ if env_file.exists():
 DEBUG = env("DEBUG")
 SECRET_KEY = env("SECRET_KEY")
 BASE_URL = env("BASE_URL")
-
-if env("DEV_ENV") in ["production"]:
-    sentry_sdk.init(dsn=env("SENTRY_DSN"))
 
 # You can explicitly turn this off in your env file
 SECURE_SSL_REDIRECT = env("SECURE_SSL_REDIRECT", default=False)
