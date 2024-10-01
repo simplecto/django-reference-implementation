@@ -10,7 +10,7 @@ gunicorn==23.0.0
 idna==3.8
 packaging==24.1
 psycopg2-binary==2.9.9
-pytz==2024.1
+pytz==2024.2
 requests==2.32.3
 sentry-sdk==2.13.0
 sqlparse==0.5.1
