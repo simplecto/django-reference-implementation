@@ -7,7 +7,7 @@ django-allauth==65.0.2
 django-bootstrap5
 django-solo==2.3.0
 gunicorn==23.0.0
-idna==3.8
+idna==3.10
 packaging==24.1
 psycopg2-binary==2.9.9
 pytz==2024.2
