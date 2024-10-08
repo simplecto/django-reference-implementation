@@ -8,11 +8,13 @@ authors = [{name = "SimpleCTO", email = "github+django_reference_implementation@
 readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
-dynamic = ["version", "description"]
+dscription = "Django Reference Implementation, a boilerplate Django project."
+versions = "0.1.0"
 
 [project.urls]
-Home = "https://simplecto.com"
+Home = "https://github.com/simplecto/django-reference-implementation"
 
+[tool.ruff]
 # Set the maximum line length to 120.
 line-length = 120
 target-version = "py312"
@@ -24,11 +26,8 @@ exclude = [
     "src/manage.py",
 ]
 
-
 [tool.ruff.lint]
-# Add the `line-too-long` rule to the enforced rule set. By default, Ruff omits rules that
-# overlap with the use of a formatter, like Black, but we can override this behavior by
-# explicitly adding the rule.
+
 ignore = [
     "ANN101",
     "E501",
