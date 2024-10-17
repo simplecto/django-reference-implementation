@@ -13,7 +13,7 @@ class OrganizationForm(forms.ModelForm):
         """Meta options for the organization form."""
 
         model = Organization
-        fields = ["name", "description"]  # noqa: RUF012
+        fields = ["name", "description"]
 
 
 class OrganizationInviteForm(forms.ModelForm):
@@ -23,7 +23,7 @@ class OrganizationInviteForm(forms.ModelForm):
         """Meta options for the organization invite form."""
 
         model = Invitation
-        fields = ["email", "role"]  # noqa: RUF012
+        fields = ["email", "role"]
 
     def __init__(self, *args, **kwargs) -> None:  # noqa: ANN002, ANN003
         """Initialize the form."""
@@ -45,9 +45,7 @@ class OrganizationInviteForm(forms.ModelForm):
         organization = self.instance.organization
         user = self.instance.invited_by
 
-        if role == OrganizationMember.RoleChoices.OWNER and not organization.is_owner(
-            user
-        ):
+        if role == OrganizationMember.RoleChoices.OWNER and not organization.is_owner(user):
             msg = "Only owners can assign owner roles."
             raise forms.ValidationError(msg)
 

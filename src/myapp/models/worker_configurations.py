@@ -12,7 +12,7 @@ class WorkerConfiguration(models.Model):
     LOG_LEVEL_WARNING = 30
     LOG_LEVEL_ERROR = 40
     LOG_LEVEL_CRITICAL = 50
-    LOG_LEVEL_CHOICES = [  # noqa: RUF012
+    LOG_LEVEL_CHOICES = [
         (LOG_LEVEL_DEBUG, "DEBUG"),
         (LOG_LEVEL_INFO, "INFO"),
         (LOG_LEVEL_WARNING, "WARNING"),

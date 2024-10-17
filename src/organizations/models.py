@@ -18,7 +18,7 @@ class Organization(models.Model):
     class Meta:
         """Meta options for the organization model."""
 
-        ordering = ["name"]  # noqa: RUF012
+        ordering = ["name"]
         verbose_name = "organization"
         verbose_name_plural = "organizations"
 
@@ -55,9 +55,7 @@ class Organization(models.Model):
             bool
 
         """
-        return self.members.filter(
-            user=user, role=OrganizationMember.RoleChoices.OWNER
-        ).exists()
+        return self.members.filter(user=user, role=OrganizationMember.RoleChoices.OWNER).exists()
 
     def is_owner(self, user: User) -> bool:
         """Return True if the user is an owner of the organization.
@@ -71,9 +69,7 @@ class Organization(models.Model):
             bool
 
         """
-        return self.members.filter(
-            user=user, role=OrganizationMember.RoleChoices.OWNER
-        ).exists()
+        return self.members.filter(user=user, role=OrganizationMember.RoleChoices.OWNER).exists()
 
     @property
     def owners(self) -> models.QuerySet:
@@ -109,23 +105,15 @@ class OrganizationMember(models.Model):
         INACTIVE = "INACTIVE", "Inactive"
         INVITED = "INVITED", "Invited"
 
-    organization = models.ForeignKey(
-        Organization, on_delete=models.CASCADE, related_name="members"
-    )
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="organizations"
-    )
-    role = models.CharField(
-        max_length=20, choices=RoleChoices.choices, default=RoleChoices.MEMBER
-    )
-    status = models.CharField(
-        max_length=20, choices=StatusChoices.choices, default=StatusChoices.ACTIVE
-    )
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name="members")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="organizations")
+    role = models.CharField(max_length=20, choices=RoleChoices.choices, default=RoleChoices.MEMBER)
+    status = models.CharField(max_length=20, choices=StatusChoices.choices, default=StatusChoices.ACTIVE)
 
     class Meta:
         """Meta options for the organization member model."""
 
-        unique_together = ["organization", "user"]  # noqa: RUF012
+        unique_together = ["organization", "user"]
         verbose_name = "organization member"
         verbose_name_plural = "organization members"
 
@@ -147,9 +135,7 @@ class OrganizationMember(models.Model):
 class Invitation(models.Model):
     """An invitation model."""
 
-    organization = models.ForeignKey(
-        Organization, on_delete=models.CASCADE, related_name="invitations"
-    )
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name="invitations")
     invited_by = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -221,9 +207,7 @@ class InvitationLog(models.Model):
         related_name="invitation_logs",
         editable=False,
     )
-    email_hash = models.CharField(
-        max_length=255, help_text="SHA256 Hash of the email address.", editable=False
-    )
+    email_hash = models.CharField(max_length=255, help_text="SHA256 Hash of the email address.", editable=False)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     message = models.TextField(blank=True, default="", editable=False)
 

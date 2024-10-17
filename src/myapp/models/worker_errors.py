@@ -12,9 +12,7 @@ class WorkerError(models.Model):
 
     uuid = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     error = models.TextField()
-    error_status = models.CharField(
-        max_length=1, choices=ERROR_STATUS_CHOICES, default=ERROR_OPEN
-    )
+    error_status = models.CharField(max_length=1, choices=ERROR_STATUS_CHOICES, default=ERROR_OPEN)
 
     worker = models.ForeignKey(
         "WorkerConfiguration",
@@ -29,7 +27,7 @@ class WorkerError(models.Model):
     class Meta:
         """Meta options for the model."""
 
-        ordering = ["-created_at"]  # noqa: RUF012
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         """Return the worker name."""

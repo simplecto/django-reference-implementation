@@ -34,7 +34,8 @@ ignore = [
     "D203",
     "D213",
     "D100",
-    "COM812"
+    "COM812",
+    "RUF012",
 ]
 select = ["ALL", "W2", "I"]
 exclude = [
