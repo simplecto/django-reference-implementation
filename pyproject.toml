@@ -49,3 +49,16 @@ exclude = [
 [tool.bandit]
 exclude = ["src/**/tests/**", "src/**/migrations/*"]
 skips = ["B106"]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+tag_format = "$version"
+bump_message = "bump: version $current_version → $new_version"
+update_changelog_on_bump = true
+changelog_file = "CHANGELOG.md"
+changelog_incremental = true
+version_files = [
+    "pyproject.toml:^version",
+    "Dockerfile:VERSION",
+]

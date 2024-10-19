@@ -7,10 +7,18 @@ include config.mk
 help:
 	@awk 'BEGIN {FS = ":.*?## "} /^[0-9a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-venv/:
-	python -m venv venv/
-	source venv/bin/activate && pip install --upgrade pip
+data/:
+	mkdir -p data/
 
+env:
+	cp env.example env
+
+.venv/: data/ env
+	python -m venv .venv/
+	source venv/bin/activate && pip install --upgrade pip
+	source venv/bin/activate && pip install -r requirements.txt
+	source venv/bin/activate && pip install -r requirements-dev.txt
+	source venv/bin/activate && pre-commit install
 
 .PHONY: migrate
 migrate: ## Run Django migrations
@@ -21,7 +29,7 @@ superuser: ## Create a superuser
 	docker compose run -it --rm django ./manage.py createsuperuser
 
 .PHONY: dev-bootstrap
-dev-bootstrap: ## Bootstrap the development environment
+dev-bootstrap: .venv/ ## Bootstrap the development environment
 	docker compose pull
 	docker compose build
 	docker compose up -d postgres
