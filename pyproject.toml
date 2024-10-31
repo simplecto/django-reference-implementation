@@ -62,3 +62,20 @@ version_files = [
     "pyproject.toml:^version",
     "Dockerfile:VERSION",
 ]
+
+[tool.pyright]
+include = ["src"]
+typeCheckingMode = "basic"  # Options: "off", "basic", "strict"
+exclude = [
+    "**/tests",
+    "**/migrations",
+    "**/__pycache__",
+]
+ignore = []
+defineConstant = { DEBUG = true }
+
+reportMissingImports = "error"
+reportMissingTypeStubs = false
+
+pythonVersion = "3.12"
+pythonPlatform = "Linux"
