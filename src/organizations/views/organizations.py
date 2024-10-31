@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 class OrganizationListView(LoginRequiredMixin, ListView):
     """List view for organizations."""
 
-    model = Organization
+    model: type[Organization] = Organization
     template_name = "organizations/index.html"
 
     def get_queryset(self) -> QuerySet:
@@ -74,9 +74,7 @@ def detail(request: HttpRequest, slug: str) -> HttpResponse:
         HttpResponse object.
 
     """
-    org_member = get_object_or_404(
-        OrganizationMember, organization__slug=slug, user=request.user
-    )
+    org_member = get_object_or_404(OrganizationMember, organization__slug=slug, user=request.user)
 
     context = {
         "organization": org_member.organization,
@@ -100,9 +98,7 @@ def invite_logs(request: HttpRequest, slug: str) -> HttpResponse:
         HttpResponse object.
 
     """
-    org_member = get_object_or_404(
-        OrganizationMember, organization__slug=slug, user=request.user
-    )
+    org_member = get_object_or_404(OrganizationMember, organization__slug=slug, user=request.user)
 
     if not org_member.can_admin:
         messages.error(request, "You do not have permission to view invite logs.")
@@ -131,14 +127,10 @@ def delete_organization(request: HttpRequest, slug: str) -> HttpResponse:
         HttpResponse object.
 
     """
-    org_member = get_object_or_404(
-        OrganizationMember, organization__slug=slug, user=request.user
-    )
+    org_member = get_object_or_404(OrganizationMember, organization__slug=slug, user=request.user)
 
     if not org_member.is_owner:
-        messages.error(
-            request, "You do not have permission to delete this organization."
-        )
+        messages.error(request, "You do not have permission to delete this organization.")
         return HttpResponse(status=403)
 
     if request.method == "POST":

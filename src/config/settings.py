@@ -21,7 +21,7 @@ SECRET_KEY = env("SECRET_KEY")
 BASE_URL = env("BASE_URL")
 
 # You can explicitly turn this off in your env file
-SECURE_SSL_REDIRECT = env("SECURE_SSL_REDIRECT", default=False)
+SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=False)  # type: ignore[reportArgumentType]
 
 CSRF_TRUSTED_ORIGINS = [BASE_URL]
 

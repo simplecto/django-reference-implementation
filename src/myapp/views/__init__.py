@@ -25,7 +25,7 @@ def health_check(request: HttpRequest) -> HttpResponse:  # noqa: ARG001
 
     :return:
     """
-    return HttpResponse("OK")
+    return HttpResponse(b"OK")
 
 
 __all__ = [

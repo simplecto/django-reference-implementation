@@ -30,11 +30,11 @@ class OrganizationInviteForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if "initial" in kwargs:
-            organization = kwargs.get("initial").get("organization")
-            user = kwargs.get("initial").get("invited_by")
+            organization = kwargs.get("initial", {}).get("organization")
+            user = kwargs.get("initial", {}).get("invited_by")
 
             if not organization.is_owner(user):
-                self.fields["role"].choices = [
+                self.fields["role"].widget.choices = [
                     (OrganizationMember.RoleChoices.ADMIN, "Admin"),
                     (OrganizationMember.RoleChoices.MEMBER, "Member"),
                 ]
@@ -52,9 +52,9 @@ class OrganizationInviteForm(forms.ModelForm):
         return role
 
     # validate that the requesting user is an owner of the organization and that the email is not already a member
-    def clean(self) -> None:
+    def clean(self) -> dict[str, str]:
         """Validate that the requesting user is an owner of the organization."""
-        cleaned_data = super().clean()
+        cleaned_data = super().clean() or {}
         organization = self.instance.organization
         user = self.instance.invited_by
         email = cleaned_data.get("email")
@@ -82,9 +82,9 @@ class AcceptInviteChangePasswordForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
     confirm_password = forms.CharField(widget=forms.PasswordInput)
 
-    def clean(self) -> None:
+    def clean(self) -> dict:
         """Validate that the passwords match."""
-        cleaned_data = super().clean()
+        cleaned_data = super().clean() or {}
         password = cleaned_data.get("password")
         confirm_password = cleaned_data.get("confirm_password")
 

@@ -9,13 +9,12 @@ readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
 dscription = "Django Reference Implementation, a boilerplate Django project."
-versions = "0.1.0"
+version = "0.1.0"
 
 [project.urls]
 Home = "https://github.com/simplecto/django-reference-implementation"
 
 [tool.ruff]
-# Set the maximum line length to 120.
 line-length = 120
 target-version = "py312"
 exclude = [
@@ -42,7 +41,7 @@ exclude = [
     "pyproject.toml",
     "src/**/tests/**",
     "src/**/migrations/**",
-    ".idea/**",
+    ".idea",
     "src/manage.py",
 ]
 
@@ -65,17 +64,46 @@ version_files = [
 
 [tool.pyright]
 include = ["src"]
-typeCheckingMode = "basic"  # Options: "off", "basic", "strict"
+typeCheckingMode = "basic"
 exclude = [
     "**/tests",
     "**/migrations",
     "**/__pycache__",
+    "**/node_modules",
+    ".git",
 ]
-ignore = []
-defineConstant = { DEBUG = true }
 
-reportMissingImports = "error"
+# Django-specific settings
+reportMissingImports = true
+reportGeneralTypeIssues = "warning"
 reportMissingTypeStubs = false
+reportUnknownMemberType = "warning"
+reportUnknownParameterType = "warning"
+reportUnknownVariableType = "warning"
+reportUntypedFunctionDecorator = "warning"
+reportOptionalSubscript = true
+reportOptionalMemberAccess = true
+reportOptionalCall = true
+
+# Important for Django
+reportUnknownArgumentType = "warning"
+reportUnusedImport = "warning"
+reportDuplicateImport = "error"
 
 pythonVersion = "3.12"
 pythonPlatform = "Linux"
+
+# Virtual environment settings
+venvPath = "."
+venv = ".venv"
+
+# Django-specific type checking settings
+stubPath = "typings"
+
+
+# Additional Django settings
+extraPaths = ["src"]
+
+[tool.django-stubs]
+django_settings_module = "config.settings"  # Adjust this to your settings module path
+strict_settings = true
