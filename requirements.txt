@@ -3,7 +3,7 @@ certifi==2024.8.30
 charset-normalizer==3.4.0
 django-environ==0.11.2
 Django==5.1.2
-django-allauth==65.0.2
+django-allauth==65.1.0
 django-bootstrap5
 django-solo==2.3.0
 gunicorn==23.0.0
