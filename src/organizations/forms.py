@@ -82,7 +82,7 @@ class AcceptInviteChangePasswordForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
     confirm_password = forms.CharField(widget=forms.PasswordInput)
 
-    def clean(self) -> dict:
+    def clean(self) -> dict[str, str]:
         """Validate that the passwords match."""
         cleaned_data = super().clean() or {}
         password = cleaned_data.get("password")

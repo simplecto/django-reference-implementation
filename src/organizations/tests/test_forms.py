@@ -11,15 +11,9 @@ User = get_user_model()
 class OrganizationInviteFormTest(TestCase):
     def setUp(self):
         self.organization = Organization.objects.create(name="Test Org")
-        self.owner = User.objects.create_user(
-            username="owner", email="owner@example.com", password="password"
-        )
-        self.admin = User.objects.create_user(
-            username="admin", email="admin@example.com", password="password"
-        )
-        self.member = User.objects.create_user(
-            username="member", email="member@example.com", password="password"
-        )
+        self.owner = User.objects.create_user(username="owner", email="owner@example.com", password="password")
+        self.admin = User.objects.create_user(username="admin", email="admin@example.com", password="password")
+        self.member = User.objects.create_user(username="member", email="member@example.com", password="password")
 
         OrganizationMember.objects.create(
             user=self.owner,
@@ -38,19 +32,16 @@ class OrganizationInviteFormTest(TestCase):
         )
 
     def test_form_initialization(self):
-        form = OrganizationInviteForm(
-            initial={"organization": self.organization, "invited_by": self.owner}
-        )
+        form = OrganizationInviteForm(initial={"organization": self.organization, "invited_by": self.owner})
         self.assertIn("role", form.fields)
         self.assertEqual(len(form.fields["role"].choices), 3)  # OWNER, ADMIN, MEMBER
 
-        form = OrganizationInviteForm(
-            initial={"organization": self.organization, "invited_by": self.admin}
-        )
+        form = OrganizationInviteForm(initial={"organization": self.organization, "invited_by": self.admin})
+        print(form.fields["role"].choices)
         self.assertEqual(len(form.fields["role"].choices), 2)  # ADMIN, MEMBER
 
     def test_clean_role(self):
-        form_data = {
+        form_data: dict = {
             "email": "newuser@example.com",
             "role": OrganizationMember.RoleChoices.OWNER,
         }
@@ -92,17 +83,13 @@ class OrganizationInviteFormTest(TestCase):
         form.instance.organization = self.organization
         form.instance.invited_by = self.owner
         self.assertFalse(form.is_valid())
-        self.assertIn(
-            "User is already a member of this organization.", form.errors["__all__"]
-        )
+        self.assertIn("User is already a member of this organization.", form.errors["__all__"])
 
         form_data = {
             "email": "newuser@example.com",
             "role": OrganizationMember.RoleChoices.MEMBER,
         }
-        Invitation.objects.create(
-            organization=self.organization, email="newuser@example.com"
-        )
+        Invitation.objects.create(organization=self.organization, email="newuser@example.com")
         form = OrganizationInviteForm(
             data=form_data,
             initial={"organization": self.organization, "invited_by": self.owner},
@@ -110,9 +97,7 @@ class OrganizationInviteFormTest(TestCase):
         form.instance.organization = self.organization
         form.instance.invited_by = self.owner
         self.assertFalse(form.is_valid())
-        self.assertIn(
-            "User is already invited to this organization.", form.errors["__all__"]
-        )
+        self.assertIn("User is already invited to this organization.", form.errors["__all__"])
 
 
 class AcceptInviteChangePasswordFormTest(TestCase):

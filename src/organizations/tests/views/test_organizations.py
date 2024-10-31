@@ -13,9 +13,7 @@ class OrganizationViewsTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="testuser", password="password")
         self.client.login(username="testuser", password="password")
-        self.organization = Organization.objects.create(
-            name="Test Org", slug="test-org"
-        )
+        self.organization = Organization.objects.create(name="Test Org", slug="test-org")
         self.org_member = OrganizationMember.objects.create(
             organization=self.organization,
             user=self.user,
@@ -23,7 +21,7 @@ class OrganizationViewsTests(TestCase):
         )
 
     def test_index_view_renders_correct_template(self):
-        response = self.client.get(reverse("organizations:index"))
+        response = self.client.get(reverse("organizations:list"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "organizations/index.html")
 
@@ -41,8 +39,6 @@ class OrganizationViewsTests(TestCase):
         self.assertTrue(Organization.objects.filter(name="New Org").exists())
 
     def test_detail_view_renders_correct_template(self):
-        response = self.client.get(
-            reverse("organizations:detail", args=[self.organization.slug])
-        )
+        response = self.client.get(reverse("organizations:detail", args=[self.organization.slug]))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "organizations/detail.html")
