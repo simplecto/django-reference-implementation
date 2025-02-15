@@ -28,7 +28,6 @@ exclude = [
 [tool.ruff.lint]
 
 ignore = [
-    "ANN101",
     "E501",
     "D203",
     "D213",

@@ -13,16 +13,14 @@ import myapp.views
 urlpatterns = [  # noqa: RUF005
     path(
         "robots.txt",
-        django.views.generic.TemplateView.as_view(
-            template_name="robots.txt", content_type="text/plain"
-        ),
+        django.views.generic.TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
         name="robots-txt",
     ),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("", myapp.views.index, name="home"),
     path("health-check/", myapp.views.health_check, name="health-check"),
-    path("profile/", myapp.views.profile, name="profile"),
+    path("profile/", myapp.views.my_profile, name="profile"),
     path(
         "organizations/",
         include(("organizations.urls", "organizations"), namespace="organizations"),
