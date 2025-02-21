@@ -12,7 +12,7 @@ packaging==24.1
 psycopg2-binary==2.9.10
 pytz==2024.2
 requests==2.32.3
-sqlparse==0.5.1
+sqlparse==0.5.3
 typing_extensions==4.12.2
 urllib3==2.2.3
 whitenoise==6.9.0
