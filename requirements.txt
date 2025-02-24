@@ -8,7 +8,7 @@ django-bootstrap5
 django-solo==2.4.0
 gunicorn==23.0.0
 idna==3.10
-packaging==24.1
+packaging==24.2
 psycopg2-binary==2.9.10
 pytz==2024.2
 requests==2.32.3
