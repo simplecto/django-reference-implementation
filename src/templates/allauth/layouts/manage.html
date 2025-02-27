@@ -1,0 +1,61 @@
+{% extends "allauth/layouts/base.html" %}
+{% load allauth %}
+{% block body %}
+    <div class="flex-grow-1 row">
+        <aside class="col-sm-4 col-md-3 col-lg-2 text-bg-dark">
+            <ul class="p-3 nav nav-pills flex-column">
+                {% url 'account_email' as email_url_ %}
+                {% if email_url_ %}
+                    <li class="nav-item">
+                        <a class="{% block nav_class_email %}nav-link text-white{% endblock %}"
+                           href="{{ email_url_ }}">Change Email</a>
+                    </li>
+                {% endif %}
+                {% url 'account_change_password' as change_password_url_ %}
+                {% if change_password_url_ %}
+                    <li class="nav-item">
+                        <a class="{% block nav_class_password %}nav-link text-white{% endblock %}"
+                           href="{{ change_password_url_ }}">Change Password</a>
+                    </li>
+                {% endif %}
+                {% url 'socialaccount_connections' as connections_url_ %}
+                {% if connections_url_ %}
+                    <li class="nav-item">
+                        <a class="{% block nav_class_socialaccount %}nav-link text-white{% endblock %}"
+                           href="{{ connections_url_ }}">Third-Party Accounts</a>
+                    </li>
+                {% endif %}
+                {% url 'mfa_index' as mfa_index_url_ %}
+                {% if mfa_index_url_ %}
+                    <li class="nav-item">
+                        <a class="{% block nav_class_mfa %}nav-link text-white{% endblock %}"
+                           href="{{ mfa_index_url_ }}">Two-Factor Authentication</a>
+                    </li>
+                {% endif %}
+                {% url 'usersessions_list' as usersessions_list_url_ %}
+                {% if usersessions_list_url_ %}
+                    <li class="nav-item">
+                        <a class="{% block nav_class_usersessions %}nav-link text-white{% endblock %}"
+                           href="{{ usersessions_list_url_ }}">Sessions</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </aside>
+        <main class="col-sm-8 col-md-9 col-lg-10">
+            <div id="content" class="container">
+                {% if messages %}
+                    <div class="pt-4">
+                        {% for message in messages %}
+                            {% element alert level=message.tags %}
+                                {% slot message %}
+                                    {{ message }}
+                                {% endslot %}
+                            {% endelement %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+{% endblock %}

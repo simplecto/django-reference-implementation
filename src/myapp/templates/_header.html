@@ -16,11 +16,20 @@
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                             <li><a class="dropdown-item" href="{% url 'organizations:list' %}">Organizations</a></li>
                             <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+
+                            {% url 'account_email' as email_url_ %}
+                            {% url 'socialaccount_connections' as socialaccount_url_ %}
+                            {% if email_url_ or socialaccount_url_ %}
+                                <li><a class="dropdown-item" href="{% if email_url_ %}{{ email_url_ }}{% else %}{{ socialaccount_url_ }}{% endif %}">Manage Account</a>
+                            {% endif %}
+
                             {% if request.user.is_superuser %}
                             <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
                             {% endif %}
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
