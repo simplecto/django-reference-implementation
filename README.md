@@ -104,6 +104,7 @@ If this one is not to your taste, then there are others to consider:
   * [SaaS Boilerplate](https://github.com/apptension/saas-boilerplate)
   * [Django Ship](https://www.djangoship.com)
   * [Djast](https://djast.dev/)
+  * [Lithium](https://github.com/wsvincent/lithium)
 
 ## Paid
   * [SaaS Pegasus](https://www.saaspegasus.com/)
