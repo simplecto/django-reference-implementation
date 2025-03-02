@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "myapp",
     "allauth",
     "allauth.account",
+    "allauth.mfa",
     "allauth.socialaccount",
     # 'allauth.socialaccount.providers.google',
     "allauth.socialaccount.providers.github",
@@ -148,7 +149,7 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 SOCIALACCOUNT_AUTO_SIGNUP = True  # Prevents automatic signup of new users
