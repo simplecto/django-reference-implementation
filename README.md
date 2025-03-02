@@ -24,6 +24,7 @@ You will see a number of use cases covered:
     * Viable alternatives to Celery
   * Sending e-mail (with SMTP)
   * User Login, Logout, Registration, password reset (email, social)
+    * 2FA enabled by default
   * Admin interface customization
   * Health-check (HEAD/GET used by Load Balancers)
   * Simple template tags (quick image thumbnails)
