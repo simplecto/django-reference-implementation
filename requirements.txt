@@ -1,6 +1,6 @@
 asgiref==3.8.1
 certifi==2024.8.30
-charset-normalizer==3.4.0
+charset-normalizer==3.4.1
 django-environ==0.12.0
 Django==5.1.6
 django-allauth[mfa]==65.4.1
