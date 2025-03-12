@@ -37,6 +37,7 @@ You will see a number of use cases covered:
   * Opinionated linting and formatting with ruff
   * Configuration and worker management inside the admin interface
   * Default pages for privacy policy, terms of service
+  * Uses bootstrap icons
 
 ---
 
