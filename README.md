@@ -36,6 +36,7 @@ You will see a number of use cases covered:
   * Deployment to Heroku, Dokku, etc using `Procfile`
   * Opinionated linting and formatting with ruff
   * Configuration and worker management inside the admin interface
+  * Default pages for privacy policy, terms of service
 
 ---
 

@@ -5,6 +5,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import TemplateView
 
 import myapp.views
 
@@ -25,4 +26,7 @@ urlpatterns = [  # noqa: RUF005
         "organizations/",
         include(("organizations.urls", "organizations"), namespace="organizations"),
     ),
+    # add privacy policy and terms of service URLs here use TemplateView.as_view
+    path("privacy/", TemplateView.as_view(template_name="privacy.html"), name="privacy"),
+    path("terms/", TemplateView.as_view(template_name="terms.html"), name="terms"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
