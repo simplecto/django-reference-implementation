@@ -109,6 +109,7 @@ If this one is not to your taste, then there are others to consider:
   * [Djast](https://djast.dev/)
   * [Lithium](https://github.com/wsvincent/lithium)
   * [Django_Boilerplate_Free](https://github.com/cangeorgecode/Django_Boilerplate_Free)
+  * [Quickscale](https://github.com/Experto-AI/quickscale)
 
 ## Paid
   * [SaaS Pegasus](https://www.saaspegasus.com/)
