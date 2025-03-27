@@ -2,7 +2,7 @@ asgiref==3.8.1
 certifi==2025.1.31
 charset-normalizer==3.4.1
 django-environ==0.12.0
-Django==5.1.6
+Django==5.1.7
 django-allauth[mfa]==65.4.1
 django-bootstrap5
 django-solo==2.4.0
