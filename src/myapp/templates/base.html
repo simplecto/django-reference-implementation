@@ -28,6 +28,15 @@
     </main>
     {% include "_footer.html" %}
     {{ site_config.js_body|safe }}
+
+    {% if request.user.is_staff and site_config.include_staff_in_analytics %}
+    {{ site_config.js_analytics|safe }}
+    {% endif %}
+
+    {% if not request.user.is_staff %}
+    {{ site_config.js_analytics|safe }}
+    {% endif %}
+
 </body>
 
 </html>

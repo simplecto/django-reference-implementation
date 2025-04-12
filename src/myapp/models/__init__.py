@@ -17,6 +17,17 @@ class SiteConfiguration(solo.models.SingletonModel):
 
     required_2fa = models.BooleanField(default=False, help_text="Require 2FA for all users.")
 
+    include_staff_in_analytics = models.BooleanField(
+        default=False,
+        help_text="Include staff in analytics.",
+    )
+
+    js_analytics = models.TextField(
+        blank=True,
+        default="",
+        help_text="Javascript to be included before the closing body tag. You should include the script tags.",
+    )
+
     js_head = models.TextField(
         blank=True,
         default="",
