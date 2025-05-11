@@ -109,4 +109,8 @@ class BaseWorkerCommand(BaseCommand):
                 "Sleeping for %d seconds.",
                 self.config.sleep_seconds,
             )
-            time.sleep(self.config.sleep_seconds)
+
+            for _ in range(self.config.sleep_seconds):
+                if not self.keep_running:
+                    break
+                time.sleep(1)
