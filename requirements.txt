@@ -11,7 +11,7 @@ idna==3.10
 packaging==25.0
 psycopg2-binary==2.9.10
 pytz==2025.2
-requests==2.32.3
+requests==2.32.4
 sqlparse==0.5.3
 typing_extensions==4.13.2
 urllib3==2.4.0
