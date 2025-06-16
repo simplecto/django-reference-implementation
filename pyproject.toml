@@ -8,7 +8,7 @@ authors = [{name = "SimpleCTO", email = "github+django_reference_implementation@
 readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
-dscription = "Django Reference Implementation, a boilerplate Django project."
+description = "Django Reference Implementation, a boilerplate Django project."
 version = "0.1.0"
 
 [project.urls]
