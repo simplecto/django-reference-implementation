@@ -10,6 +10,13 @@ services:
       - ./src:/app
     ports:
       - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      s3proxy:
+        condition: service_started
+      mailpit:
+        condition: service_started
     # for development only, to make sure the server reloads when the code changes
     command: python manage.py runserver 0.0.0.0:8000
 
@@ -17,7 +24,7 @@ services:
     image: postgres:16
     restart: unless-stopped
     volumes:
-        - ./data/pgdata:/var/lib/postgresql/data
+        - postgres_data:/var/lib/postgresql/data
     environment:
         # this matches the values in the env.sample file
         POSTGRES_DB: django_reference
@@ -25,6 +32,11 @@ services:
         POSTGRES_PASSWORD: pass123
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   s3proxy:
     restart: unless-stopped
@@ -33,7 +45,7 @@ services:
     ports:
       - "9000:80"
     volumes:
-      - ./data/s3proxy:/data
+      - s3proxy_data:/data
     environment:
       S3PROXY_AUTHORIZATION: none
       S3PROXY_STORAGE: filesystem
@@ -43,7 +55,7 @@ services:
     image: axllent/mailpit
     restart: unless-stopped
     volumes:
-      - ./data/mailpit:/data
+      - mailpit_data:/data
     ports:
       - 8025:8025
       - 1025:1025
@@ -64,3 +76,8 @@ services:
       - ./src:/app
     depends_on:
         - postgres
+
+volumes:
+  postgres_data:
+  s3proxy_data:
+  mailpit_data:
