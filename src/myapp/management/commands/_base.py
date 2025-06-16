@@ -48,7 +48,7 @@ class BaseWorkerCommand(BaseCommand):
         self.config, created = WorkerConfiguration.objects.get_or_create(name=self.NAME)
 
         if created:
-            logging.critical("WorkerConfiguration created: %s", self.NAME)
+            self.logger.critical("WorkerConfiguration created: %s", self.NAME)
 
         self.current_log_level = self.logger.getEffectiveLevel()
         self.keep_running = True
