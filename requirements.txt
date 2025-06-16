@@ -4,7 +4,7 @@ charset-normalizer==3.4.2
 django-environ==0.12.0
 Django==5.2.3
 django-allauth[mfa]==65.9.0
-django-bootstrap5
+django-bootstrap5==25.1
 django-solo==2.4.0
 gunicorn==23.0.0
 idna==3.10
@@ -16,3 +16,5 @@ sqlparse==0.5.3
 typing_extensions==4.13.2
 urllib3==2.4.0
 whitenoise==6.9.0
+
+PyJWT==2.10.1
