@@ -14,7 +14,7 @@ pytz==2025.2
 requests==2.32.4
 sqlparse==0.5.3
 typing_extensions==4.13.2
-urllib3==2.4.0
+urllib3==2.5.0
 whitenoise==6.9.0
 
 PyJWT==2.10.1
