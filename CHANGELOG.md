@@ -1,3 +1,9 @@
+## v0.1.3 (2025-07-21)
+
+### Fix
+
+- use commitizen's built-in changelog generation in release workflow
+
 ## v0.1.2 (2025-07-21)
 
 ## v0.1.1 (2025-07-21)
