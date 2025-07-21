@@ -1,8 +1,14 @@
 FROM python:3.12-slim
 
-COPY requirements.txt /
-RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir -r /requirements.txt
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# Copy dependency files and required files for hatchling
+COPY pyproject.toml uv.lock LICENSE README.md ./
+
+# Install dependencies
+RUN uv sync --frozen --no-cache
+
 RUN mkdir /app
 COPY src/ app/
 

@@ -2,12 +2,13 @@
 
 <div style="text-align: center;">
 
-![Django](https://img.shields.io/badge/Django-5.1-green.svg)
+![Django](https://img.shields.io/badge/Django-5.2.3-green.svg)
 ![Python](https://img.shields.io/badge/Python-3.12-blue.svg)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)
 ![Ruff](https://img.shields.io/badge/Linting-Ruff-purple.svg)
+![uv](https://img.shields.io/badge/Dependencies-uv-orange.svg)
 
 **Production-ready Django SaaS template with organizations, invitations, and solid authentication built-in.**
 

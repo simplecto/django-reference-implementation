@@ -6,6 +6,7 @@ Ok, lets get started. You're gonna need the usual things to get started:
 
   * Docker
   * Python 3.12
+  * uv (for Python dependency management)
   * PostgreSQL
   * S3 Buckets (Provider of choice, we use Backblaze for production and
     S3Proxy[^1] for dev)
@@ -41,6 +42,7 @@ make bootstrap-dev
 It will :
 - pull containers
 - build the django container
+- install Python dependencies with uv
 - migrate the initial database
 - prompt you to create a superuser.
 
