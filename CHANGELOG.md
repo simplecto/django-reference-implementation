@@ -1,3 +1,13 @@
+## v0.1.4 (2025-07-21)
+
+### Feat
+
+- configure dependabot groups to batch related dependency updates
+
+### Fix
+
+- update entrypoint.sh to use uv run for Django commands
+
 ## v0.1.3 (2025-07-21)
 
 ### Fix
