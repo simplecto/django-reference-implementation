@@ -35,17 +35,12 @@ def remove_member(request: HttpRequest, slug: str) -> HttpResponse:
     target = get_object_or_404(OrganizationMember, user_id=user_id)
 
     # requesting user must be a member of the organization, otherwise 404
-    org_member = get_object_or_404(
-        OrganizationMember, organization__slug=slug, user=request.user
-    )
+    org_member = get_object_or_404(OrganizationMember, organization__slug=slug, user=request.user)
 
     org = org_member.organization
 
     # an organization owner can only remove themselves if there are other owners
-    if (
-        org_member.role == OrganizationMember.RoleChoices.OWNER
-        and org.owners.count() == 1
-    ):
+    if org_member.role == OrganizationMember.RoleChoices.OWNER and org.owners.count() == 1:
         messages.error(request, "You cannot remove yourself as the only owner.")
         return redirect("organizations:detail", slug=slug)
 
@@ -81,9 +76,7 @@ def invite_user(request: HttpRequest, slug: str) -> HttpResponse:
         HttpResponse object.
 
     """
-    org_member = get_object_or_404(
-        OrganizationMember, organization__slug=slug, user=request.user
-    )
+    org_member = get_object_or_404(OrganizationMember, organization__slug=slug, user=request.user)
 
     if not org_member.can_admin:
         messages.error(request, "You do not have permission to invite users.")
@@ -178,15 +171,11 @@ def accept_invite(request: HttpRequest, token: str) -> HttpResponse:
 
         login(request, user, backend=backend)
 
-        messages.success(
-            request, "You have joined the organization. Please set your password."
-        )
+        messages.success(request, "You have joined the organization. Please set your password.")
         return redirect("organizations:accept_invite_change_password")
 
     if user.is_anonymous and invite.user_exists:
-        messages.error(
-            request, "An account with this email already exists. Login to continue."
-        )
+        messages.error(request, "An account with this email already exists. Login to continue.")
         return redirect("account_login")
 
     messages.error(request, "You are not authorized to accept this invite.")

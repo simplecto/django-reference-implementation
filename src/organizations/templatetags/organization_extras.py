@@ -27,9 +27,7 @@ def get_user_role(organization: Organization, user: User) -> str | None:
 
     """
     try:
-        org_member = OrganizationMember.objects.get(
-            organization=organization, user=user
-        )
+        org_member = OrganizationMember.objects.get(organization=organization, user=user)
     except OrganizationMember.DoesNotExist:
         return None
 
