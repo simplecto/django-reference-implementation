@@ -16,15 +16,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Copy test environment file
-      run: cp env.test env
-
     - name: Build Docker image
       run: docker build -t dri-test .
 
     - name: Run Django tests
       run: |
         docker run --rm \
-          -v $(pwd)/env:/env \
+          -v $(pwd)/env.test:/env \
           dri-test \
           python manage.py test
