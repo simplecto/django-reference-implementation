@@ -12,7 +12,7 @@ description = "Django Reference Implementation, a boilerplate Django project."
 version = "0.1.2"
 requires-python = ">=3.12"
 dependencies = [
-    "asgiref==3.8.1",
+    "asgiref==3.9.1",
     "certifi==2025.6.15",
     "charset-normalizer==3.4.2",
     "django-environ==0.12.0",
