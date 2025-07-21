@@ -22,6 +22,17 @@ jobs:
     - name: Run Django tests
       run: |
         docker run --rm \
-          -v $(pwd)/env.test:/env \
+          -e DATABASE_URL=sqlite:///test.db \
+          -e SECRET_KEY=test-secret-key-for-github-actions-only \
+          -e DEBUG=True \
+          -e BASE_URL=http://localhost:8000 \
+          -e AWS_ACCESS_KEY_ID=test-access-key \
+          -e AWS_SECRET_ACCESS_KEY=test-secret-key \
+          -e AWS_STORAGE_BUCKET_NAME=testbucket \
+          -e AWS_S3_REGION_NAME=us-east-1 \
+          -e AWS_S3_ENDPOINT_URL=http://localhost:9000 \
+          -e AWS_S3_USE_SSL=false \
+          -e EMAIL_URL=smtp://localhost:1025 \
+          -e DEFAULT_FROM_EMAIL=test@localhost \
           dri-test \
           python manage.py test
