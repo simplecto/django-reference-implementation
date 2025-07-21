@@ -65,9 +65,16 @@ jobs:
           git push origin master
           git push origin --tags
 
-      - name: Generate release notes
+      - name: Extract latest changelog entry
         run: |
-          uv run cz changelog --dry-run --incremental > RELEASE_NOTES.md
+          # Extract the latest release notes from CHANGELOG.md
+          sed -n '/^## v${{ env.NEW_VERSION }}/,/^## /p' CHANGELOG.md | sed '$d' > RELEASE_NOTES.md
+          # If extraction failed, use a fallback message
+          if [ ! -s RELEASE_NOTES.md ]; then
+            echo "## v${{ env.NEW_VERSION }}" > RELEASE_NOTES.md
+            echo "" >> RELEASE_NOTES.md
+            echo "Release v${{ env.NEW_VERSION }}" >> RELEASE_NOTES.md
+          fi
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
