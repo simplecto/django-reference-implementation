@@ -4,16 +4,20 @@ from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 from django.test import TestCase, Client
 from django.urls import reverse
-
-from organizations.models import Organization, OrganizationMember, Invitation
 from django.utils import timezone
 import uuid
+
+from myapp.models import SiteConfiguration
+from organizations.models import Organization, OrganizationMember, Invitation
 
 
 class InvitationViewsTests(TestCase):
     """Invitation views tests."""
 
     def setUp(self):
+        # Create SiteConfiguration singleton for tests
+        SiteConfiguration.objects.get_or_create()
+
         self.user = User.objects.create_user(username="testuser", password="password")
         self.client.login(username="testuser", password="password")
         self.organization = Organization.objects.create(
@@ -158,6 +162,9 @@ class InvitationViewsTests(TestCase):
 
 class AcceptInviteChangePasswordTests(TestCase):
     def setUp(self):
+        # Create SiteConfiguration singleton for tests
+        SiteConfiguration.objects.get_or_create()
+
         self.user = User.objects.create_user(
             username="testuser", password="old_password"
         )
@@ -197,6 +204,9 @@ class AcceptInviteChangePasswordTests(TestCase):
 
 class DeclineInviteTests(TestCase):
     def setUp(self):
+        # Create SiteConfiguration singleton for tests
+        SiteConfiguration.objects.get_or_create()
+
         self.client = Client()
         self.user = User.objects.create_user(username="testuser", password="12345")
         self.organization = Organization.objects.create(name="Test Organization")
@@ -234,6 +244,9 @@ class DeclineInviteTests(TestCase):
 
 class AcceptInviteTests(TestCase):
     def setUp(self):
+        # Create SiteConfiguration singleton for tests
+        SiteConfiguration.objects.get_or_create()
+
         self.client = Client()
         self.user = User.objects.create_user(username="testuser", password="12345")
         self.organization = Organization.objects.create(

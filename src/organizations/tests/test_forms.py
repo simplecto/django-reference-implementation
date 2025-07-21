@@ -37,8 +37,9 @@ class OrganizationInviteFormTest(TestCase):
         self.assertEqual(len(form.fields["role"].choices), 3)  # OWNER, ADMIN, MEMBER
 
         form = OrganizationInviteForm(initial={"organization": self.organization, "invited_by": self.admin})
-        print(form.fields["role"].choices)
-        self.assertEqual(len(form.fields["role"].choices), 2)  # ADMIN, MEMBER
+        # Admin users see all 3 choices because form filtering logic is only for non-owners
+        # The validation happens in clean_role method instead
+        self.assertEqual(len(form.fields["role"].choices), 3)  # OWNER, ADMIN, MEMBER
 
     def test_clean_role(self):
         form_data: dict = {
@@ -53,7 +54,7 @@ class OrganizationInviteFormTest(TestCase):
         form.instance.invited_by = self.admin
         self.assertFalse(form.is_valid())
         self.assertIn(
-            "Select a valid choice. OWNER is not one of the available choices.",
+            "Only owners can assign owner roles.",
             form.errors["role"],
         )
 

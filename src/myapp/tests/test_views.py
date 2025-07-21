@@ -1,11 +1,15 @@
 from django.test import TestCase
+from myapp.models import SiteConfiguration
 
 
 class TestViews(TestCase):
+    def setUp(self):
+        # Create SiteConfiguration singleton for tests
+        SiteConfiguration.objects.get_or_create()
     def test_index(self):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "home.html")
+        self.assertTemplateUsed(response, "myapp/home.html")
 
     def test_health_check(self):
         response = self.client.get("/health-check/")

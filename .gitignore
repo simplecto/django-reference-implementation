@@ -3,6 +3,7 @@ __pycache__/
 data/
 
 env
+env.backup
 .env
 config.mk
 *.dump

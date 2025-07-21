@@ -12,54 +12,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_DB: django_test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Copy test environment file
+      run: cp env.test env
+
     - name: Build Docker image
       run: docker build -t dri-test .
-
-    - name: Wait for PostgreSQL to be ready
-      run: |
-        until pg_isready -h localhost -U postgres; do
-          echo "Waiting for PostgreSQL..."
-          sleep 5
-        done
 
     - name: Run Django tests
       run: |
         docker run --rm \
-          --network host \
-          -e DATABASE_URL=postgres://postgres:postgres@localhost:5432/django_test \
-          -e SECRET_KEY=test-secret-key-for-github-actions-only \
-          -e DEBUG=True \
-          -e BASE_URL=http://localhost:8000 \
-          -e AWS_ACCESS_KEY_ID=test-access-key \
-          -e AWS_SECRET_ACCESS_KEY=test-secret-key \
-          -e AWS_STORAGE_BUCKET_NAME=testbucket \
-          -e AWS_S3_REGION_NAME=us-east-1 \
-          -e AWS_S3_ENDPOINT_URL=http://localhost:9000 \
-          -e AWS_S3_USE_SSL=false \
-          -e EMAIL_URL=smtp://localhost:1025 \
-          -e DEFAULT_FROM_EMAIL=test@localhost \
-          -e DO_MIGRATIONS=false \
-          -e DO_COLLECTSTATIC=false \
-          -e REDDIT_CLIENT_ID=test-client-id \
-          -e REDDIT_CLIENT_SECRET=test-client-secret \
+          -v $(pwd)/env:/env \
           dri-test \
           python manage.py test

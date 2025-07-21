@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
+from myapp.models import SiteConfiguration
 from organizations.models import Organization, OrganizationMember
 
 
@@ -11,6 +12,9 @@ class OrganizationViewsTests(TestCase):
     """Organization views tests."""
 
     def setUp(self):
+        # Create SiteConfiguration singleton for tests
+        SiteConfiguration.objects.get_or_create()
+
         self.user = User.objects.create_user(username="testuser", password="password")
         self.client.login(username="testuser", password="password")
         self.organization = Organization.objects.create(name="Test Org", slug="test-org")
