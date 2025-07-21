@@ -18,8 +18,12 @@ permissions:
   id-token: write
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   release:
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -45,9 +49,6 @@ jobs:
 
       - name: Run formatting check
         run: uv run ruff format --check .
-
-      - name: Run tests
-        run: uv run src/manage.py test
 
       - name: Configure Git
         run: |

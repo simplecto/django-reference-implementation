@@ -34,5 +34,6 @@ jobs:
           -e AWS_S3_USE_SSL=false \
           -e EMAIL_URL=smtp://localhost:1025 \
           -e DEFAULT_FROM_EMAIL=test@localhost \
+          --entrypoint "" \
           dri-test \
-          python manage.py test
+          uv run manage.py test
