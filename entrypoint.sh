@@ -4,7 +4,7 @@ set -e
 
 cmd="$@"
 
-./manage.py collectstatic --noinput
-./manage.py migrate
+uv run ./manage.py collectstatic --noinput
+uv run ./manage.py migrate
 
-exec $cmd
+exec uv run $cmd
