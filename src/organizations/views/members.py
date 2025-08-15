@@ -48,7 +48,7 @@ def remove_member(request: HttpRequest, slug: str) -> HttpResponse:
     if target == org_member:
         target.delete()
         messages.success(request, "You have left the organization.")
-        return redirect("profile")
+        return redirect("organizations:list")
 
     # only owners and admins can remove members
     if not org_member.can_admin:

@@ -138,7 +138,7 @@ def delete_organization(request: HttpRequest, slug: str) -> HttpResponse:
         if form.is_valid():
             org_member.organization.delete()
             messages.success(request, "Organization deleted successfully.")
-            return redirect("profile")
+            return redirect("organizations:list")
     else:
         form = DeleteOrganizationForm()
 
