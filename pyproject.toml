@@ -65,7 +65,7 @@ ignore = [
     "D213",
     "D100",
     "COM812",
-    "RUF012",
+    "RUF012", # mutable class attributes (too pedantic for Django models)
 ]
 select = ["ALL", "W2", "I"]
 exclude = [
