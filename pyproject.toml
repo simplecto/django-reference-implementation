@@ -39,6 +39,10 @@ dev = [
     "pre-commit==4.2.0",
     "commitizen>=3.0.0",
     "bandit==1.8.0",
+    "radon==6.0.1",
+    "vulture==2.14",
+    "mypy==1.11.2",
+    "django-stubs[compatible-mypy]==5.1.0",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -80,6 +84,20 @@ exclude = [
 [tool.bandit]
 exclude = ["src/**/tests/**", "src/**/migrations/*"]
 skips = ["B106"]
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["mypy_django_plugin.main"]
+exclude = [
+    ".*/migrations/.*",
+    ".*/tests/.*",
+    "manage.py",
+]
+# Suppress some Django-related errors for cleaner output
+disable_error_code = ["import-untyped", "var-annotated"]
+
+[tool.django-stubs]
+django_settings_module = "config.settings"
 
 [tool.commitizen]
 name = "cz_conventional_commits"

@@ -72,6 +72,21 @@ uv run ruff format .
 
 # Run tests
 uv run src/manage.py test
+
+# Security scanning
+uv run bandit -r src/
+
+# Code complexity analysis
+uv run radon cc src/ --show-complexity  # Cyclomatic complexity
+uv run radon mi src/                     # Maintainability index
+uv run radon raw src/                    # Raw metrics (SLOC, comments, etc.)
+
+# Dead code detection
+uv run vulture src/ --min-confidence 80  # Find unused code (high confidence)
+uv run vulture src/ --min-confidence 60  # Find unused code (medium confidence)
+
+# Type checking
+cd src && DJANGO_SETTINGS_MODULE=config.settings uv run mypy organizations/ myapp/ config/ --ignore-missing-imports --disable-error-code=var-annotated
 ```
 
 ## Development Workflow
