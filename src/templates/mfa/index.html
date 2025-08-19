@@ -1,0 +1,161 @@
+{% extends "mfa/base_manage.html" %}
+{% load allauth %}
+{% load i18n %}
+
+{% block head_title %}
+    {% trans "Two-Factor Authentication" %}
+{% endblock head_title %}
+
+{% block content %}
+    {% element h1 tags="mfa,index" %}
+        {% trans "Two-Factor Authentication" %}
+    {% endelement %}
+
+    {# Check if user's email is verified #}
+    {% with user.emailaddress_set.all as email_addresses %}
+        {% with email_addresses|first as primary_email %}
+            {% if not primary_email.verified %}
+                {# Email verification required - show helpful message and CTAs #}
+                {% element panel tags="warning" %}
+                    {% slot title %}
+                        {% translate "Email Verification Required" %}
+                    {% endslot %}
+                    {% slot body %}
+                        {% element p %}
+                            {% translate "You cannot activate two-factor authentication until you have verified your email address." %}
+                        {% endelement %}
+                        {% element p %}
+                            {% blocktranslate with email=primary_email.email %}
+                                Please check your email inbox at <strong>{{ email }}</strong> for a verification link, or click the buttons below to manage your email settings.
+                            {% endblocktranslate %}
+                        {% endelement %}
+                    {% endslot %}
+                    {% slot actions %}
+                        {% url 'account_email' as email_url %}
+                        {% element button href=email_url tags="primary" %}
+                            {% translate "Verify Email Address" %}
+                        {% endelement %}
+
+                        {% comment %}
+                        Note: django-allauth doesn't have a direct "resend verification" URL,
+                        but the email management page at /accounts/email/ allows resending
+                        {% endcomment %}
+                    {% endslot %}
+                {% endelement %}
+
+                {# Show grayed-out 2FA options to indicate what's coming #}
+                {% element panel tags="disabled" %}
+                    {% slot title %}
+                        {% translate "Two-Factor Authentication (Available After Email Verification)" %}
+                    {% endslot %}
+                    {% slot body %}
+                        {% element p %}
+                            {% translate "Once your email is verified, you'll be able to set up:" %}
+                        {% endelement %}
+                        <ul>
+                            {% if "totp" in MFA_SUPPORTED_TYPES %}
+                                <li>{% translate "Authenticator App (TOTP)" %}</li>
+                            {% endif %}
+                            {% if "webauthn" in MFA_SUPPORTED_TYPES %}
+                                <li>{% translate "Security Keys (WebAuthn)" %}</li>
+                            {% endif %}
+                        </ul>
+                    {% endslot %}
+                {% endelement %}
+            {% else %}
+                {# Email is verified - show normal 2FA setup options #}
+                {% if "totp" in MFA_SUPPORTED_TYPES %}
+                    {% element panel %}
+                        {% slot title %}
+                            {% translate "Authenticator App" %}
+                        {% endslot %}
+                        {% slot body %}
+                            {% if authenticators.totp %}
+                                {% element p %}
+                                    {% translate "Authentication using an authenticator app is active." %}
+                                {% endelement %}
+                            {% else %}
+                                {% element p %}
+                                    {% translate "An authenticator app is not active." %}
+                                {% endelement %}
+                            {% endif %}
+                        {% endslot %}
+                        {% slot actions %}
+                            {% url 'mfa_deactivate_totp' as deactivate_url %}
+                            {% url 'mfa_activate_totp' as activate_url %}
+                            {% if authenticators.totp %}
+                                {% element button href=deactivate_url tags="danger,delete,panel" %}
+                                    {% translate "Deactivate" %}
+                                {% endelement %}
+                            {% else %}
+                                {% element button href=activate_url tags="panel" %}
+                                    {% translate "Activate" %}
+                                {% endelement %}
+                            {% endif %}
+                        {% endslot %}
+                    {% endelement %}
+                {% endif %}
+
+                {% if "webauthn" in MFA_SUPPORTED_TYPES %}
+                    {% element panel %}
+                        {% slot title %}
+                            {% translate "Security Keys" %}
+                        {% endslot %}
+                        {% slot body %}
+                            {% if authenticators.webauthn|length %}
+                                {% element p %}
+                                    {% blocktranslate count count=authenticators.webauthn|length %}You have added {{ count }} security key.{% plural %}You have added {{ count }} security keys.{% endblocktranslate %}
+                                {% endelement %}
+                            {% else %}
+                                {% element p %}
+                                    {% translate "You have not added any security keys." %}
+                                {% endelement %}
+                            {% endif %}
+                        {% endslot %}
+                        {% slot actions %}
+                            {% url 'mfa_activate_webauthn' as activate_url %}
+                            {% element button href=activate_url tags="panel" %}
+                                {% translate "Add Security Key" %}
+                            {% endelement %}
+                        {% endslot %}
+                    {% endelement %}
+                {% endif %}
+
+                {% if "recovery_codes" in MFA_SUPPORTED_TYPES %}
+                    {% element panel %}
+                        {% slot title %}
+                            {% translate "Recovery Codes" %}
+                        {% endslot %}
+                        {% slot body %}
+                            {% if authenticators.recovery_codes %}
+                                {% element p %}
+                                    {% blocktranslate count unused_code_count=authenticators.recovery_codes.get_unused_codes|length %}You have {{ unused_code_count }} unused recovery code remaining.{% plural %}You have {{ unused_code_count }} unused recovery codes remaining.{% endblocktranslate %}
+                                {% endelement %}
+                            {% else %}
+                                {% element p %}
+                                    {% translate "You do not have any recovery codes set up." %}
+                                {% endelement %}
+                            {% endif %}
+                        {% endslot %}
+                        {% slot actions %}
+                            {% url 'mfa_view_recovery_codes' as view_url %}
+                            {% url 'mfa_generate_recovery_codes' as generate_url %}
+                            {% if authenticators.recovery_codes %}
+                                {% element button href=view_url tags="panel" %}
+                                    {% translate "View Codes" %}
+                                {% endelement %}
+                                {% element button href=generate_url tags="panel" %}
+                                    {% translate "Generate Codes" %}
+                                {% endelement %}
+                            {% else %}
+                                {% element button href=generate_url tags="panel" %}
+                                    {% translate "Generate Codes" %}
+                                {% endelement %}
+                            {% endif %}
+                        {% endslot %}
+                    {% endelement %}
+                {% endif %}
+            {% endif %}
+        {% endwith %}
+    {% endwith %}
+{% endblock content %}
