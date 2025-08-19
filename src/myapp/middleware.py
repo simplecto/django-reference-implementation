@@ -8,9 +8,12 @@ See GitHub Issue #173 for vulnerability details.
 """
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING
 
 from allauth.mfa.adapter import get_adapter as get_mfa_adapter
+
+if TYPE_CHECKING:
+    from django.contrib.auth.models import AbstractUser
 from asgiref.sync import sync_to_async
 from django.conf import settings
 from django.contrib import messages
@@ -73,7 +76,7 @@ class Require2FAMiddleware:
 
         return request.path.startswith((static_url, media_url))
 
-    def _user_has_2fa(self, user: Any) -> bool:
+    def _user_has_2fa(self, user: "AbstractUser") -> bool:
         """Check if user has 2FA enabled."""
         mfa_adapter = get_mfa_adapter()
         return mfa_adapter.is_mfa_enabled(user)
@@ -90,9 +93,9 @@ class Require2FAMiddleware:
                 # Can't resolve = probably 404 = let it through
                 security_logger.debug("2FA: path %s doesn't resolve, allowing", request.path)
                 return True
-            except Exception as e:
+            except Exception as resolution_error:  # noqa: BLE001
                 # Unexpected error during resolution - log and don't exempt
-                security_logger.warning("2FA: error resolving path %s: %s", request.path, str(e))
+                security_logger.warning("2FA: error resolving path %s: %s", request.path, str(resolution_error))
                 return False
 
         # Check by URL name
@@ -109,28 +112,55 @@ class Require2FAMiddleware:
 
         return False
 
-    # Sync version
-    def __call__(self, request: HttpRequest) -> HttpResponse:
-        """Process the request and enforce 2FA if required."""
+    def _should_enforce_2fa(self, request: HttpRequest) -> bool:
+        """Check if 2FA should be enforced for this request."""
         # Skip static/media files
         if self._is_static_request(request):
-            return self.get_response(request)
+            return False
 
         # Skip if user not authenticated
         if not request.user.is_authenticated:
-            return self.get_response(request)
+            return False
 
         # Skip exempt URLs
         if self._is_exempt_url(request):
-            return self.get_response(request)
+            return False
 
         # Check if 2FA is required by site configuration
         site_config = SiteConfiguration.objects.get()
         if not site_config.required_2fa:
-            return self.get_response(request)
+            return False
 
         # Check if user has 2FA
-        if self._user_has_2fa(request.user):
+        return not self._user_has_2fa(request.user)
+
+    async def _should_enforce_2fa_async(self, request: HttpRequest) -> bool:
+        """Async version: Check if 2FA should be enforced for this request."""
+        # Skip static/media files
+        if self._is_static_request(request):
+            return False
+
+        # Skip if user not authenticated
+        if not request.user.is_authenticated:
+            return False
+
+        # Skip exempt URLs
+        if self._is_exempt_url(request):
+            return False
+
+        # Check if 2FA is required by site configuration
+        site_config = await sync_to_async(SiteConfiguration.objects.get)()
+        if not site_config.required_2fa:
+            return False
+
+        # Check if user has 2FA
+        has_2fa = await sync_to_async(self._user_has_2fa)(request.user)
+        return not has_2fa
+
+    # Sync version
+    def __call__(self, request: HttpRequest) -> HttpResponse:
+        """Process the request and enforce 2FA if required."""
+        if not self._should_enforce_2fa(request):
             return self.get_response(request)
 
         # User needs 2FA - log and redirect
@@ -150,26 +180,7 @@ class Require2FAMiddleware:
     # Async version
     async def __acall__(self, request: HttpRequest) -> HttpResponse:
         """Process the request and enforce 2FA if required."""
-        # Skip static/media files
-        if self._is_static_request(request):
-            return await self.get_response(request)
-
-        # Skip if user not authenticated
-        if not request.user.is_authenticated:
-            return await self.get_response(request)
-
-        # Skip exempt URLs
-        if self._is_exempt_url(request):
-            return await self.get_response(request)
-
-        # Check if 2FA is required by site configuration
-        site_config = await sync_to_async(SiteConfiguration.objects.get)()
-        if not site_config.required_2fa:
-            return await self.get_response(request)
-
-        # Check if user has 2FA
-        has_2fa = await sync_to_async(self._user_has_2fa)(request.user)
-        if has_2fa:
+        if not await self._should_enforce_2fa_async(request):
             return await self.get_response(request)
 
         # User needs 2FA - log and redirect
