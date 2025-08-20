@@ -58,3 +58,23 @@ snapshot-local-db: ## Create a snapshot of the local database
 .PHONY: restore-local-db
 restore-local-db: ## Restore the local database from a snapshot
 	docker compose exec -T postgres pg_restore -U postgres -d django_reference < django_reference.dump
+
+##########################################################################
+# DJANGO-ALLAUTH DEPENDENCY MANAGEMENT
+##########################################################################
+
+.PHONY: dev-allauth
+dev-allauth: ## Switch to local editable django-allauth install (if workspace exists)
+	@echo "⚠️  Local development not fully working yet - use prod-allauth instead"
+	@exit 1
+
+.PHONY: prod-allauth
+prod-allauth: ## Switch to remote git django-allauth source
+	-uv remove django-allauth
+	uv add "django-allauth[mfa,socialaccount] @ git+https://github.com/heysamtexas/django-allauth.git@heysamtexas-patches"
+	@echo "✅ Switched to remote git django-allauth"
+
+.PHONY: allauth-status
+allauth-status: ## Show current django-allauth source
+	@echo "Current django-allauth dependency:"
+	@grep "django-allauth" pyproject.toml || echo "django-allauth not found in pyproject.toml"
