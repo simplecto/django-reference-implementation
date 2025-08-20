@@ -31,7 +31,8 @@ repos:
   hooks:
     - id: check-django-allauth-prod
       name: Check django-allauth is production-ready
-      entry: bash -c 'if grep -E "(editable.*django-allauth|django-allauth.*\.\./)" pyproject.toml; then echo "❌ ERROR: Local django-allauth detected in pyproject.toml. Run '\''make prod-allauth'\'' first."; exit 1; fi'
+      entry: |
+        bash -c 'if grep -E "(editable.*django-allauth|django-allauth.*\.\./)" pyproject.toml; then echo "ERROR: Local django-allauth detected. Run make prod-allauth first."; exit 1; fi'
       language: system
       files: pyproject.toml
       pass_filenames: false
