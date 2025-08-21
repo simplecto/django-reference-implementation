@@ -19,6 +19,36 @@ This is a Django Reference Implementation - a production-ready Django SaaS templ
 - **Multi-tenancy**: Organization-based tenancy with invitation system
 - **Templates**: Bootstrap 5 UI with dark mode support
 
+## Git Workflow for Claude Code
+
+### Commit and Push Process
+**IMPORTANT**: Always run pre-commit checks before committing to avoid sync issues.
+
+```bash
+# 1. Stage changes
+git add .
+
+# 2. Run pre-commit checks manually (prevents hook conflicts)
+pre-commit run --all-files
+
+# 3. Stage any fixes made by pre-commit
+git add .
+
+# 4. Commit and push atomically (prevents race conditions)
+git commit -m "message" && git push origin master
+```
+
+**Why this matters:**
+- Pre-commit hooks modify files AFTER commit creation
+- This creates mismatches between local commit and working directory
+- Leads to push rejections and rebase issues
+- Running checks first eliminates these problems
+
+**For documentation-only changes (optional):**
+```bash
+git commit -m "docs: message" --no-verify && git push origin master
+```
+
 ## Common Commands
 
 ### Development Environment
