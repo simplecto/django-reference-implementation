@@ -22,7 +22,7 @@ from django.shortcuts import redirect
 from django.urls import Resolver404, resolve
 from django.utils.decorators import sync_and_async_middleware
 
-from myapp.models import SiteConfiguration
+from .models import TwoFactorConfig
 
 # Set up security logging
 security_logger = logging.getLogger("security.2fa")
@@ -56,7 +56,6 @@ class Require2FAMiddleware:
             "mfa_generate_recovery_codes",  # Generate recovery codes
             "mfa_view_recovery_codes",  # View recovery codes
             "mfa_download_recovery_codes",  # Download recovery codes
-            "admin:login",
         }
 
     def _is_static_request(self, request: HttpRequest) -> bool:
@@ -127,8 +126,8 @@ class Require2FAMiddleware:
             return False
 
         # Check if 2FA is required by site configuration
-        site_config = SiteConfiguration.objects.get()
-        if not site_config.required_2fa:
+        config = TwoFactorConfig.objects.get()
+        if not config.required:
             return False
 
         # Check if user has 2FA
@@ -149,8 +148,8 @@ class Require2FAMiddleware:
             return False
 
         # Check if 2FA is required by site configuration
-        site_config = await sync_to_async(SiteConfiguration.objects.get)()
-        if not site_config.required_2fa:
+        config = await sync_to_async(TwoFactorConfig.objects.get)()
+        if not config.required:
             return False
 
         # Check if user has 2FA

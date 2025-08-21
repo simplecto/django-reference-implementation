@@ -15,8 +15,6 @@ class SiteConfiguration(solo.models.SingletonModel):
     worker_enabled = models.BooleanField(default=False)
     worker_sleep_seconds = models.IntegerField(default=FIVE_SECONDS)
 
-    required_2fa = models.BooleanField(default=False, help_text="Require 2FA for all users.")
-
     include_staff_in_analytics = models.BooleanField(
         default=False,
         help_text="Include staff in analytics.",

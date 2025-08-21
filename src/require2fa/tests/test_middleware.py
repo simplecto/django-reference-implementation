@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase, Client, override_settings
 from django.urls import reverse
 
-from myapp.models import SiteConfiguration
+from require2fa.models import TwoFactorConfig
 
 User = get_user_model()
 
@@ -20,8 +20,11 @@ class Require2FAMiddlewareIntegrationTest(TestCase):
         # Create test user
         self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpass123")
 
-        # Enable 2FA site-wide
-        self.site_config = SiteConfiguration.objects.create(required_2fa=True)
+        # Enable 2FA site-wide (get_or_create for singleton)
+        self.config, created = TwoFactorConfig.objects.get_or_create(defaults={'required': True})
+        if not created:
+            self.config.required = True
+            self.config.save()
 
     def test_unauthenticated_users_access_everything(self):
         """Unauthenticated users should not be affected by 2FA middleware."""
@@ -42,9 +45,10 @@ class Require2FAMiddlewareIntegrationTest(TestCase):
         """Users without 2FA should be redirected to setup for protected URLs."""
         self.client.force_login(self.user)
 
-        # These URLs should trigger 2FA redirect (admin has its own login)
+        # These URLs should trigger 2FA redirect
         protected_paths = [
             "/",
+            "/admin/",  # Admin now requires 2FA too
         ]
 
         for path in protected_paths:
@@ -93,8 +97,8 @@ class Require2FAMiddlewareIntegrationTest(TestCase):
     def test_2fa_disabled_site_wide_allows_everything(self):
         """When 2FA is disabled, middleware should not interfere."""
         # Disable 2FA site-wide
-        self.site_config.required_2fa = False
-        self.site_config.save()
+        self.config.required = False
+        self.config.save()
 
         self.client.force_login(self.user)
 
@@ -186,7 +190,10 @@ class SecurityRegressionTest(TestCase):
         """Set up test with 2FA enabled."""
         self.client = Client()
         self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpass123")
-        SiteConfiguration.objects.create(required_2fa=True)
+        config, created = TwoFactorConfig.objects.get_or_create(defaults={'required': True})
+        if not created:
+            config.required = True
+            config.save()
 
     def test_accounts_namespace_no_longer_bypassed(self):
         """The original /accounts/* bypass vulnerability should be fixed."""
@@ -233,7 +240,10 @@ class ConfigurationSecurityTest(TestCase):
         """Set up test environment."""
         self.client = Client()
         self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpass123")
-        SiteConfiguration.objects.create(required_2fa=True)
+        config, created = TwoFactorConfig.objects.get_or_create(defaults={'required': True})
+        if not created:
+            config.required = True
+            config.save()
 
     @override_settings(MEDIA_URL="/", STATIC_URL="/static/")
     def test_dangerous_media_url_root_path_blocked(self):
@@ -281,7 +291,7 @@ class ConfigurationSecurityTest(TestCase):
 
     def test_missing_media_url_edge_case(self):
         """Test middleware behavior when getattr is used with safe defaults."""
-        from myapp.middleware import Require2FAMiddleware
+        from require2fa.middleware import Require2FAMiddleware
         from django.test import RequestFactory
         from django.conf import settings
 
