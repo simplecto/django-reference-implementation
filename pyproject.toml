@@ -36,7 +36,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "ruff==0.12.9",
+    "ruff==0.12.10",
     "pre-commit==4.3.0",
     "commitizen>=3.0.0",
     "bandit==1.8.6",
