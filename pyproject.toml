@@ -16,7 +16,7 @@ dependencies = [
     "certifi==2025.8.3",
     "charset-normalizer==3.4.3",
     "django-environ==0.12.0",
-    "Django==5.2.5",
+    "Django==5.2.6",
     "django-bootstrap5==25.2",
     "django-solo==2.4.0",
     "gunicorn==23.0.0",
@@ -26,7 +26,7 @@ dependencies = [
     "pytz==2025.2",
     "requests==2.32.5",
     "sqlparse==0.5.3",
-    "typing_extensions==4.14.1",
+    "typing_extensions==4.15.0",
     "urllib3==2.5.0",
     "whitenoise==6.9.0",
     "PyJWT==2.10.1",
@@ -36,7 +36,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "ruff==0.12.9",
+    "ruff==0.12.12",
     "pre-commit==4.3.0",
     "commitizen>=3.0.0",
     "bandit==1.8.6",
