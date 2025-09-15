@@ -16,7 +16,7 @@ dependencies = [
     "certifi==2025.8.3",
     "charset-normalizer==3.4.3",
     "django-environ==0.12.0",
-    "Django==5.2.5",
+    "Django==5.2.6",
     "django-bootstrap5==25.2",
     "django-solo==2.4.0",
     "gunicorn==23.0.0",
@@ -43,7 +43,7 @@ dev = [
     "radon==6.0.1",
     "vulture==2.14",
     "mypy==1.17.1",
-    "django-stubs[compatible-mypy]==5.2.2",
+    "django-stubs[compatible-mypy]==5.2.5",
 ]
 
 [tool.hatch.build.targets.wheel]
