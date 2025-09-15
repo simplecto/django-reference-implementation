@@ -26,9 +26,9 @@ dependencies = [
     "pytz==2025.2",
     "requests==2.32.5",
     "sqlparse==0.5.3",
-    "typing_extensions==4.14.1",
+    "typing_extensions==4.15.0",
     "urllib3==2.5.0",
-    "whitenoise==6.9.0",
+    "whitenoise==6.10.0",
     "PyJWT==2.10.1",
     "django-allauth[mfa,socialaccount]",
     "django-allauth-require2fa",
@@ -42,7 +42,7 @@ dev = [
     "bandit==1.8.6",
     "radon==6.0.1",
     "vulture==2.14",
-    "mypy==1.17.1",
+    "mypy==1.18.1",
     "django-stubs[compatible-mypy]==5.2.2",
 ]
 
