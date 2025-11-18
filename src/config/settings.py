@@ -186,4 +186,4 @@ LOGGING = {
     },
 }
 
-LOGIN_REDIRECT_URL = "/accounts/email/"
+LOGIN_REDIRECT_URL = "/admin/"

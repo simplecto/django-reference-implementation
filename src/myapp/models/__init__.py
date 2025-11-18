@@ -3,17 +3,9 @@
 import solo.models
 from django.db import models
 
-from .worker_configurations import WorkerConfiguration
-from .worker_errors import WorkerError
-
-FIVE_SECONDS = 5
-
 
 class SiteConfiguration(solo.models.SingletonModel):
     """Store the configuration of the site."""
-
-    worker_enabled = models.BooleanField(default=False)
-    worker_sleep_seconds = models.IntegerField(default=FIVE_SECONDS)
 
     include_staff_in_analytics = models.BooleanField(
         default=False,
@@ -42,4 +34,4 @@ class SiteConfiguration(solo.models.SingletonModel):
         return "Site Configuration"
 
 
-__all__ = ["SiteConfiguration", "WorkerConfiguration", "WorkerError"]
+__all__ = ["SiteConfiguration"]

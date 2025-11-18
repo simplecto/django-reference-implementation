@@ -2,20 +2,16 @@
 
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    """Show the homepage.
+    """Redirect to login page.
 
     :param request:
     :return:
     """
-    test_flash = request.GET.get("test_flash", None)
-    if test_flash:
-        messages.success(request, "This is a test flash message.")
-
-    return render(request, "myapp/home.html")
+    return redirect("/accounts/login/")
 
 
 def health_check(request: HttpRequest) -> HttpResponse:  # noqa: ARG001

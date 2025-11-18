@@ -1,2 +1,8 @@
-{% extends "allauth/elements/form.html" %}
-{% block form_class %}{% endblock %}
+{% load allauth %}
+{% for err in attrs.form.non_field_errors %}<div role="alert" class="bg-red-100 border-red-400 text-red-700 border-l-4 p-4 mb-4">{{ err }}</div>{% endfor %}
+<form method="{{ attrs.method }}" action="{{ attrs.action }}">
+    {% slot body %}
+    {% endslot %}
+    {% slot actions %}
+    {% endslot %}
+</form>

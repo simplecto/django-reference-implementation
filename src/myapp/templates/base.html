@@ -29,7 +29,6 @@
     <main class="container mx-auto px-4 max-w-7xl">
     {% block content %}{% endblock %}
     </main>
-    {% include "_footer.html" %}
     {{ site_config.js_body|safe }}
 
     {% if request.user.is_staff and site_config.include_staff_in_analytics %}
