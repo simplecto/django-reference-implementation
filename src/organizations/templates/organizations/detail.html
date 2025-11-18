@@ -1,0 +1,103 @@
+{% extends "organizations/base.html" %}
+
+{% block h1 %}{{ organization.name }}{% endblock %}
+
+{% block page_actions %}
+{% if org_member.role != 'OWNER' %}
+<form action="{% url "organizations:remove_member" slug=organization.slug %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="user_id" value="{{ request.user.id }}">
+    <button type="submit" class="btn btn-danger">Leave organization</button>
+</form>
+{% endif %}
+{# invite members link #}
+<div class="btn-group" role="group">
+
+    {% if org_member.can_admin %}
+        <a class="btn btn-sm btn-outline-primary" href="{% url "organizations:invite" slug=organization.slug %}" title="Invite someone to organization">Invite to join</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url "organizations:invite_logs" slug=organization.slug %}" title="View invitation logs">View invitation logs</a>
+    {% endif %}
+
+    {% if org_member.is_owner %}
+        <a class="btn btn-sm btn-outline-danger" href="{% url "organizations:delete_organization" slug=organization.slug %}" title="Delete organization">Delete organization</a>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block page_content %}
+
+    {# show members #}
+    <h2>Membership roster</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Members</th>
+                <th>Role</th>
+                <th>Status</th>
+                {% if org_member.can_admin %}<th>Actions</th>{% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in organization.members.all %}
+                <tr>
+                    <td>{{ member.user.username }}</td>
+                    <td>{{ member.role }}</td>
+                    <td>{{ member.status }}</td>
+
+                    {% if org_member.can_admin %}
+                    <td>
+                    {# only enable actions for admins, but not yourself #}
+                    {% if member != org_member %}
+                        <select name="role" id="role">
+                            {# only owners can create more owners #}
+                            {% if org_member.is_owner %}<option value="owner" {% if member.role == 'OWNER' %}selected{% endif %}>Owner</option>{% endif %}
+                            <option value="admin" {% if member.role == 'ADMIN' %}selected{% endif %}>Admin</option>
+                            <option value="member" {% if member.role == 'MEMBER' %}selected{% endif %}>Member</option>
+                        </select>
+                        {# owners can remove anyone, including other owners #}
+                        {% if org_member.is_owner %}
+                            <a href="{% url "organizations:remove_member" slug=org_member.organization.slug %}" title="Remove member">Remove</a>
+                        {# admins can remove anyone except owners #}
+                        {% elif not member.is_owner %}
+                            <a href="{% url "organizations:remove_member" slug=org_member.organization.slug %}" title="Remove member">Remove</a>
+                        {% endif %}
+                    {% else %}
+                        You can't remove yourself
+                    {% endif %}
+                    </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+    </table>
+
+    {% if org_member.can_admin %}
+    <h2>Pending Invitations</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invite in organization.invitations.all %}
+                <tr>
+                    <td>{{ invite.email }}</td>
+                    <td>{{ invite.role }}</td>
+                    <td>
+                        <a href="#" title="Cancel invitation">Cancel</a> |
+                        <a href="#" title="Resend invitation">Resend</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No pending invitations</td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    {% endif %}
+
+{% endblock %}

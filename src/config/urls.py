@@ -9,6 +9,8 @@ from django.views.generic import TemplateView
 
 import myapp.views
 
+# import urls from the organizations app
+
 urlpatterns = [  # noqa: RUF005
     path(
         "robots.txt",
@@ -19,7 +21,10 @@ urlpatterns = [  # noqa: RUF005
     path("accounts/", include("allauth.urls")),
     path("", myapp.views.index, name="home"),
     path("health-check/", myapp.views.health_check, name="health-check"),
-    path("", include("dataroom.urls")),
+    path(
+        "organizations/",
+        include(("organizations.urls", "organizations"), namespace="organizations"),
+    ),
     # add privacy policy and terms of service URLs here use TemplateView.as_view
     path("privacy/", TemplateView.as_view(template_name="privacy.html"), name="privacy"),
     path("terms/", TemplateView.as_view(template_name="terms.html"), name="terms"),

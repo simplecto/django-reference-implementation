@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Decline invite</h1>
+<p>Are you sure you want to decline the invite from {{ organization.name }}?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Decline</button>
+    <a href="#" class="btn btn-secondary">Cancel</a>
+</form>
+{%  endblock %}

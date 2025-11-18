@@ -1,0 +1,40 @@
+{% extends "organizations/base.html" %}
+{% load django_bootstrap5 %}
+
+{% block h1 %}Delete Organization{% endblock %}
+
+{% block breadcrumb_title %}Delete Organization{% endblock %}
+
+{% block page_content %}
+    <div>
+
+        <div class="alert alert-warning">This is kind of a big deal. You will probably lose all the things connected to or under management
+        of this organization. That can include configurations, files, and your deepest, darkest, confessions
+        that you squirreled away here. On second thought.... do it. Let no one else see your shame. </div>
+
+
+
+        <form action="{% url "organizations:delete_organization" slug=organization.slug %}" method="post" class="form">
+            {% csrf_token %}
+            <label for="delete-input" class="form-label fw-bold">Type DELETE to confirm</label>
+            <div class="input-group mb-3">
+              <input name="confirm" id="confirm" type="text" class="form-control" placeholder="DELETE" aria-label="Type DELETE to confirm" aria-describedby="delete-input">
+              <button class="btn btn-outline-danger" type="submit" id="button-submit">Delete</button>
+            </div>
+        </form>
+        {% bootstrap_form_errors form %}
+
+    </div>
+
+    <hr/>
+
+    <h3>Transfer Ownership</h3>
+        <p>If you want to transfer ownership:</p>
+        <ol>
+            <li>Add someone as an OWNER to the organization.</li>
+            <li>Remove yourself from the organization.</li>
+            <li>DONE.</li>
+        </ol>
+
+
+{% endblock %}
