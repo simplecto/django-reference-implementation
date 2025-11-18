@@ -4,80 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Files</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Uppy CSS -->
     <link href="https://releases.transloadit.com/uppy/v3.25.3/uppy.min.css" rel="stylesheet">
 
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .upload-container {
-            max-width: 900px;
-            margin: 50px auto;
-        }
-        .upload-box {
-            background: white;
-            border-radius: 8px;
-            padding: 40px;
-        }
-        .file-list {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 30px;
-        }
-        .file-item {
-            padding: 15px;
-            border-bottom: 1px solid #dee2e6;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .file-item:last-child {
-            border-bottom: none;
-        }
-        .file-info {
-            flex-grow: 1;
-        }
-        .file-name {
-            font-weight: 500;
-            color: #212529;
-        }
-        .file-meta {
-            font-size: 0.875rem;
-            color: #6c757d;
-        }
         /* Uppy drag-drop customization */
         .uppy-Root {
             font-family: inherit;
         }
         .uppy-DragDrop-container {
-            border: 2px dashed #dee2e6;
-            border-radius: 8px;
-            transition: border-color 0.3s;
+            border: 2px dashed #d1d5db !important;
+            border-radius: 0.5rem !important;
+            transition: border-color 0.3s !important;
         }
         .uppy-DragDrop-container:hover {
-            border-color: #0d6efd;
-        }
-        #upload-status {
-            margin-top: 20px;
+            border-color: #3b82f6 !important;
         }
     </style>
 </head>
-<body>
-    <div class="upload-container">
-        <div class="text-center mb-4">
-            <h1 class="mb-2">File Upload</h1>
-            <p class="text-muted">{{ endpoint.name }}</p>
+<body class="bg-gray-100 dark:bg-gray-900">
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">File Upload</h1>
+            <p class="text-gray-600 dark:text-gray-300">{{ endpoint.name }}</p>
         </div>
 
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <div class="{% if message.tags == 'success' %}bg-green-100 border-green-400 text-green-700{% elif message.tags == 'error' or message.tags == 'danger' %}bg-red-100 border-red-400 text-red-700{% elif message.tags == 'warning' %}bg-yellow-100 border-yellow-400 text-yellow-700{% elif message.tags == 'info' %}bg-blue-100 border-blue-400 text-blue-700{% else %}bg-gray-100 border-gray-400 text-gray-700{% endif %} border-l-4 p-4 mb-4 relative" role="alert">
+                    <p class="pr-8">{{ message }}</p>
+                    <button type="button" class="absolute top-4 right-4 text-current opacity-50 hover:opacity-100" onclick="this.parentElement.remove()">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
                 </div>
             {% endfor %}
         {% endif %}
@@ -86,21 +48,20 @@
         <div id="upload-status"></div>
 
         <!-- Uppy drag-drop area -->
-        <div class="upload-box">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-10 mb-8">
             <div id="drag-drop-area"></div>
-            <div class="uppy-ProgressBar" id="upload-progress"></div>
+            <div class="uppy-ProgressBar mt-5" id="upload-progress"></div>
         </div>
 
         <!-- File list -->
-        <div class="file-list" id="file-list-container">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="mb-0">Uploaded Files <span id="file-count">({{ files.count }})</span></h4>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6" id="file-list-container">
+            <div class="flex justify-between items-center mb-6">
+                <h4 class="text-2xl font-semibold text-gray-900 dark:text-white">Uploaded Files <span id="file-count" class="text-gray-500 dark:text-gray-400">({{ files.count }})</span></h4>
                 {% if user.is_authenticated and user.is_staff and files %}
                     <a href="{% url 'dataroom:download_endpoint_zip' endpoint_id=endpoint.id %}"
-                       class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download me-1" viewBox="0 0 16 16">
-                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                       class="inline-flex items-center px-4 py-2 font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                         </svg>
                         Download All as Zip
                     </a>
@@ -109,16 +70,16 @@
             <div id="file-list">
                 {% if files %}
                     {% for file in files %}
-                    <div class="file-item" data-file-id="{{ file.id }}">
-                        <div class="file-info">
-                            <div class="file-name">{{ file.filename }}</div>
-                            <div class="file-meta">
+                    <div class="flex justify-between items-center py-4 border-b border-gray-200 dark:border-gray-700 last:border-b-0" data-file-id="{{ file.id }}">
+                        <div class="flex-grow">
+                            <div class="font-medium text-gray-900 dark:text-white">{{ file.filename }}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">
                                 Uploaded {{ file.uploaded_at|date:"F d, Y g:i A" }} • {{ file.file_size_bytes|filesizeformat }}
                             </div>
                         </div>
                         <form method="post" action="{% url 'dataroom:delete_file' endpoint_id=endpoint.id file_id=file.id %}" style="display: inline;" class="delete-form">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                            <button type="submit" class="px-3 py-1.5 text-sm font-medium text-red-700 bg-white border border-red-700 rounded-lg hover:bg-red-100 dark:bg-gray-800 dark:text-red-400 dark:border-red-400 dark:hover:bg-gray-700"
                                     onclick="return confirm('Are you sure you want to delete {{ file.filename }}?');">
                                 Delete
                             </button>
@@ -126,15 +87,13 @@
                     </div>
                     {% endfor %}
                 {% else %}
-                    <div class="text-center text-muted" id="no-files-message">
+                    <div class="text-center text-gray-500 dark:text-gray-400 py-8" id="no-files-message">
                         <p>No files uploaded yet</p>
                     </div>
                 {% endif %}
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Uppy JavaScript -->
     <script src="https://releases.transloadit.com/uppy/v3.25.3/uppy.min.js"></script>
@@ -188,17 +147,30 @@
         function showStatus(message, type = 'success') {
             const statusDiv = document.getElementById('upload-status');
             const alert = document.createElement('div');
-            alert.className = `alert alert-${type} alert-dismissible fade show`;
+
+            let bgColor, borderColor, textColor;
+            if (type === 'success') {
+                bgColor = 'bg-green-100'; borderColor = 'border-green-400'; textColor = 'text-green-700';
+            } else if (type === 'danger') {
+                bgColor = 'bg-red-100'; borderColor = 'border-red-400'; textColor = 'text-red-700';
+            } else {
+                bgColor = 'bg-blue-100'; borderColor = 'border-blue-400'; textColor = 'text-blue-700';
+            }
+
+            alert.className = `${bgColor} ${borderColor} ${textColor} border-l-4 p-4 mb-4 relative`;
             alert.innerHTML = `
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <p class="pr-8">${message}</p>
+                <button type="button" class="absolute top-4 right-4 text-current opacity-50 hover:opacity-100" onclick="this.parentElement.remove()">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
             `;
             statusDiv.appendChild(alert);
 
             // Auto-dismiss after 5 seconds
             setTimeout(() => {
-                alert.classList.remove('show');
-                setTimeout(() => alert.remove(), 150);
+                alert.remove();
             }, 5000);
         }
 
@@ -236,18 +208,18 @@
 
             // Create new file item
             const fileItem = document.createElement('div');
-            fileItem.className = 'file-item';
+            fileItem.className = 'flex justify-between items-center py-4 border-b border-gray-200 dark:border-gray-700 last:border-b-0';
             fileItem.setAttribute('data-file-id', fileData.id);
             fileItem.innerHTML = `
-                <div class="file-info">
-                    <div class="file-name">${fileData.filename}</div>
-                    <div class="file-meta">
+                <div class="flex-grow">
+                    <div class="font-medium text-gray-900 dark:text-white">${fileData.filename}</div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">
                         Uploaded ${formatDate(fileData.uploaded_at)} • ${formatFileSize(fileData.size)}
                     </div>
                 </div>
                 <form method="post" action="/upload/{{ endpoint.id }}/delete/${fileData.id}/" style="display: inline;" class="delete-form">
                     <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
-                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                    <button type="submit" class="px-3 py-1.5 text-sm font-medium text-red-700 bg-white border border-red-700 rounded-lg hover:bg-red-100 dark:bg-gray-800 dark:text-red-400 dark:border-red-400 dark:hover:bg-gray-700"
                             onclick="return confirm('Are you sure you want to delete ${fileData.filename}?');">
                         Delete
                     </button>
@@ -258,7 +230,7 @@
             fileList.insertBefore(fileItem, fileList.firstChild);
 
             // Update file count
-            const currentCount = fileList.querySelectorAll('.file-item').length;
+            const currentCount = fileList.querySelectorAll('[data-file-id]').length;
             document.getElementById('file-count').textContent = `(${currentCount})`;
         }
 

@@ -1,57 +1,57 @@
-<footer class="bd-footer py-4 py-md-5 mt-5 bg-body-tertiary">
-  <div class="container py-4 py-md-5 px-4 px-md-3 text-body-secondary">
-    <div class="row">
-      <div class="col-lg-3 mb-3">
-        <a class="d-inline-flex align-items-center mb-2 text-body-emphasis text-decoration-none" href="/" aria-label="Bootstrap">
-          <span class="fs-5">{{ site_name }}</span>
+<footer class="py-8 md:py-12 mt-12 bg-gray-100 dark:bg-gray-900">
+  <div class="max-w-7xl mx-auto py-8 md:py-12 px-4 md:px-6 text-gray-600 dark:text-gray-400">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+      <div class="col-span-2 md:col-span-1 mb-6">
+        <a class="inline-flex items-center mb-4 text-gray-900 dark:text-white no-underline" href="/" aria-label="{{ site_name }}">
+          <span class="text-xl font-semibold">{{ site_name }}</span>
         </a>
-        <ul class="list-unstyled small">
-          <li class="mb-2">{{ site_name }} by <a href="https://simplecto.com" title="SimpleCTO website/blog">SimpleCTO</a>.</li>
-          <li class="mb-2">Code licensed <a href="https://github.com/twbs/bootstrap/blob/main/LICENSE" target="_blank" rel="license noopener">MIT</a>.</li>
-          <li class="mb-2">This currently borrowed heavily from <a href="https://getbootstrap.com/" target="_blank" rel="noopener">Bootstrap</a>.</li>
-          <li class="mb-2">
-              <button class="btn btn-small btn-outline-secondary" id="dark-mode-toggle">Toggle Dark Mode</button>
+        <ul class="list-none text-sm space-y-2">
+          <li>{{ site_name }} by <a href="https://simplecto.com" class="hover:underline" title="SimpleCTO website/blog">SimpleCTO</a>.</li>
+          <li>Code licensed <a href="https://github.com/twbs/bootstrap/blob/main/LICENSE" class="hover:underline" target="_blank" rel="license noopener">MIT</a>.</li>
+          <li>Built with <a href="https://tailwindcss.com/" class="hover:underline" target="_blank" rel="noopener">Tailwind CSS</a>.</li>
+          <li class="mt-4">
+              <button class="px-3 py-2 text-sm border border-gray-400 dark:border-gray-600 rounded hover:bg-gray-200 dark:hover:bg-gray-800" id="dark-mode-toggle">Toggle Dark Mode</button>
           </li>
         </ul>
       </div>
-      <div class="col-6 col-lg-2 offset-lg-1 mb-3">
-        <h5>Links</h5>
-        <ul class="list-unstyled">
-          <li class="mb-2"><a href="/">Home</a></li>
-          <li class="mb-2"><a href="https://github.com/simplecto/django-reference-implementation">Github</a></li>
-          <li class="mb-2"><a href="https://github.com/simplecto/django-reference-implementation/issues">Issues</a></li>
-          <li class="mb-2"><a href="{% url "privacy" %}" title="Privacy Policy">Privacy Policy</a></li>
-          <li class="mb-2"><a href="{% url "terms" %}" title="Terms of Service">Terms of Service</a></li>
+      <div class="mb-6">
+        <h5 class="font-semibold text-gray-900 dark:text-white mb-3">Links</h5>
+        <ul class="list-none space-y-2">
+          <li><a href="/" class="hover:underline">Home</a></li>
+          <li><a href="https://github.com/simplecto/django-reference-implementation" class="hover:underline">Github</a></li>
+          <li><a href="https://github.com/simplecto/django-reference-implementation/issues" class="hover:underline">Issues</a></li>
+          <li><a href="{% url "privacy" %}" class="hover:underline" title="Privacy Policy">Privacy Policy</a></li>
+          <li><a href="{% url "terms" %}" class="hover:underline" title="Terms of Service">Terms of Service</a></li>
         </ul>
       </div>
-      <div class="col-6 col-lg-2 mb-3">
-        <h5>Guides</h5>
-        <ul class="list-unstyled">
-          <li class="mb-2"><a href="#">Link</a></li>
-          <li class="mb-2"><a href="#">Link</a></li>
-          <li class="mb-2"><a href="#">Link</a></li>
-          <li class="mb-2"><a href="#">Link</a></li>
-          <li class="mb-2"><a href="#">Link</a></li>
+      <div class="mb-6">
+        <h5 class="font-semibold text-gray-900 dark:text-white mb-3">Guides</h5>
+        <ul class="list-none space-y-2">
+          <li><a href="#" class="hover:underline">Link</a></li>
+          <li><a href="#" class="hover:underline">Link</a></li>
+          <li><a href="#" class="hover:underline">Link</a></li>
+          <li><a href="#" class="hover:underline">Link</a></li>
+          <li><a href="#" class="hover:underline">Link</a></li>
         </ul>
       </div>
-      <div class="col-6 col-lg-2 mb-3">
-        <h5>Projects</h5>
-        <ul class="list-unstyled">
-          <li class="mb-2"><a href="#">Link</a></li>
-          <li class="mb-2"><a href="#">Link</a></li>
-          <li class="mb-2"><a href="#">Link</a></li>
-          <li class="mb-2"><a href="#">Link</a></li>
-          <li class="mb-2"><a href="#">Link</a></li>
+      <div class="mb-6">
+        <h5 class="font-semibold text-gray-900 dark:text-white mb-3">Projects</h5>
+        <ul class="list-none space-y-2">
+          <li><a href="#" class="hover:underline">Link</a></li>
+          <li><a href="#" class="hover:underline">Link</a></li>
+          <li><a href="#" class="hover:underline">Link</a></li>
+          <li><a href="#" class="hover:underline">Link</a></li>
+          <li><a href="#" class="hover:underline">Link</a></li>
         </ul>
       </div>
-      <div class="col-6 col-lg-2 mb-3">
-        <h5>Community</h5>
-        <ul class="list-unstyled">
-          <li class="mb-2"><a href="#">Link</a></li>
-          <li class="mb-2"><a href="#">Link</a></li>
-          <li class="mb-2"><a href="#">Link</a></li>
-          <li class="mb-2"><a href="#">Link</a></li>
-          <li class="mb-2"><a href="#">Link</a></li>
+      <div class="mb-6">
+        <h5 class="font-semibold text-gray-900 dark:text-white mb-3">Community</h5>
+        <ul class="list-none space-y-2">
+          <li><a href="#" class="hover:underline">Link</a></li>
+          <li><a href="#" class="hover:underline">Link</a></li>
+          <li><a href="#" class="hover:underline">Link</a></li>
+          <li><a href="#" class="hover:underline">Link</a></li>
+          <li><a href="#" class="hover:underline">Link</a></li>
         </ul>
       </div>
     </div>

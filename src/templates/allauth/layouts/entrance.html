@@ -1,10 +1,10 @@
 {% extends "allauth/layouts/base.html" %}
 {% load i18n allauth %}
 {% block body %}
-    <div class="flex-grow-1 bg-body-secondary d-flex flex-column justify-content-center">
-        <div class="flex-grow-0 flex-shrink-0 container">
-            <div class="row justify-content-md-center">
-                <div class="col col-lg-4">
+    <div class="flex-grow flex bg-gray-100 dark:bg-gray-900 flex-col justify-center py-12">
+        <div class="flex-grow-0 flex-shrink-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex justify-center">
+                <div class="w-full max-w-md">
                     {% if messages %}
                         {% for message in messages %}
                             {% element alert level=message.tags %}
@@ -14,8 +14,8 @@
                             {% endelement %}
                         {% endfor %}
                     {% endif %}
-                    <div class="bg-white shadow rounded-4">
-                        <div id="content" class="p-5">
+                    <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl">
+                        <div id="content" class="p-8">
                             {% block content %}{% endblock %}
                         </div>
                     </div>

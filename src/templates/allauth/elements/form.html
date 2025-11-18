@@ -1,13 +1,13 @@
 {% load allauth %}
-{% for err in attrs.form.non_field_errors %}<div role="alert" class="alert alert-danger">{{ err }}</div>{% endfor %}
-<form class="{% block form_class %}{% if not attrs.no_visible_fields %}card{% endif %}{% endblock %}"
+{% for err in attrs.form.non_field_errors %}<div role="alert" class="bg-red-100 border-red-400 text-red-700 border-l-4 p-4 mb-4">{{ err }}</div>{% endfor %}
+<form class="{% block form_class %}{% if not attrs.no_visible_fields %}bg-white dark:bg-gray-800 rounded-lg{% endif %}{% endblock %}"
       method="{{ attrs.method }}"
       action="{{ attrs.action }}">
-    {% if not attrs.no_visible_fields %}<div class="card-body">{% endif %}
+    {% if not attrs.no_visible_fields %}<div class="p-6">{% endif %}
         {% slot body %}
         {% endslot %}
         {% if not attrs.no_visible_fields %}</div>{% endif %}
-    {% if not attrs.no_visible_fields %}<div class="card-footer">{% endif %}
+    {% if not attrs.no_visible_fields %}<div class="px-6 py-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 rounded-b-lg">{% endif %}
         {% slot actions %}
         {% endslot %}
         {% if not attrs.no_visible_fields %}</div>{% endif %}

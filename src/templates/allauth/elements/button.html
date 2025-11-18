@@ -7,20 +7,29 @@
 {% if attrs.type %}type="{{ attrs.type }}"{% endif %}
 {% if attrs.value %}value="{{ attrs.value }}"{% endif %}
 class="{% block class %}
-    btn
-    {% if "link" in attrs.tags %}btn-link
+    {% if "link" in attrs.tags %}text-blue-600 dark:text-blue-400 hover:underline
     {% else %}
-      {% if "prominent" in attrs.tags %}btn-lg{% elif "minor" in attrs.tags %}btn-sm{% endif %}
-      btn-{% if 'outline' in attrs.tags %}outline-{% endif %}{% if "danger" in attrs.tags %}danger{% elif "secondary" in attrs.tags %}secondary{% elif "warning" in attrs.tags %}warning{% else %}primary{% endif %}
+      {% if "prominent" in attrs.tags %}px-6 py-3 text-lg{% elif "minor" in attrs.tags %}px-3 py-1.5 text-sm{% else %}px-4 py-2{% endif %}
+      font-medium rounded-lg focus:ring-4 focus:outline-none
+      {% if "danger" in attrs.tags %}
+        {% if 'outline' in attrs.tags %}text-red-700 bg-white border border-red-700 hover:bg-red-100 dark:bg-gray-800 dark:text-red-400 dark:border-red-400 dark:hover:bg-gray-700{% else %}text-white bg-red-600 hover:bg-red-700 focus:ring-red-300 dark:focus:ring-red-800{% endif %}
+      {% elif "secondary" in attrs.tags %}
+        {% if 'outline' in attrs.tags %}text-gray-700 bg-white border border-gray-300 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700{% else %}text-white bg-gray-600 hover:bg-gray-700 focus:ring-gray-300 dark:focus:ring-gray-800{% endif %}
+      {% elif "warning" in attrs.tags %}
+        {% if 'outline' in attrs.tags %}text-yellow-700 bg-white border border-yellow-700 hover:bg-yellow-100 dark:bg-gray-800 dark:text-yellow-400 dark:border-yellow-400 dark:hover:bg-gray-700{% else %}text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-300 dark:focus:ring-yellow-800{% endif %}
+      {% else %}
+        {% if 'outline' in attrs.tags %}text-blue-700 bg-white border border-blue-700 hover:bg-blue-100 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-400 dark:hover:bg-gray-700{% else %}text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 dark:focus:ring-blue-800{% endif %}
+      {% endif %}
     {% endif %}{% endblock %}">
     {% if "tool" in attrs.tags %}
     {% if "delete" in attrs.tags %}
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+</svg>
     {% elif "edit" in attrs.tags %}
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793L14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5L3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+</svg>
     {% endif %}
     {% endif %}
 

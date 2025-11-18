@@ -1,33 +1,33 @@
 {% load allauth %}
 {% if attrs.type == "checkbox" or attrs.type == "radio" %}
-    <div class="form-check mb-3">
+    <div class="flex items-center mb-4">
         <input {% if attrs.required %}required{% endif %}
                name="{{ attrs.name }}"
-               class="form-check-input"
+               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                id="{{ attrs.id }}"
                {% if attrs.value is not None %}value="{{ attrs.value }}"{% endif %}
                {% if attrs.disabled %}disabled{% endif %}
                type="{{ attrs.type }}">
-        <label class="form-check-label" for="{{ attrs.id }}">
+        <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="{{ attrs.id }}">
             {% slot label %}
             {% endslot %}
         </label>
         {% if slots.help_text %}
-            <div class="form-text">
+            <div class="ml-6 mt-1 text-sm text-gray-500 dark:text-gray-400">
                 {% slot help_text %}
                 {% endslot %}
             </div>
         {% endif %}
     </div>
 {% elif attrs.type == "textarea" %}
-    <div class="mb-3">
-        <label for="{{ attrs.id }}">
+    <div class="mb-4">
+        <label for="{{ attrs.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             {% slot label %}
             {% endslot %}
         </label>
         <textarea {% if attrs.required %}required{% endif %}
                   {% if attrs.rows %}rows="{{ attrs.rows }}"{% endif %}
-                  class="form-control"
+                  class="block w-full px-4 py-2 text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   name="{{ attrs.name }}"
                   {% if attrs.readonly %}readonly{% endif %}
                   id="{{ attrs.id }}"
@@ -40,38 +40,28 @@
            {% if attrs.value is not None %}value="{{ attrs.value }}"{% endif %}
            type="hidden">
 {% elif attrs.type == "select" %}
-    <div class="{% if attrs.unlabeled %}form-floating{% endif %} mb-3">
-        {% if not attrs.unlabeled %}
-            <label for="{{ attrs.id }}">
-                {% slot label %}
-                {% endslot %}
-            </label>
-        {% endif %}
-        <select id="{{ attrs.id }}" name="{{ attrs.name }}" class="form-select">
+    <div class="mb-4">
+        <label for="{{ attrs.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            {% slot label %}
+            {% endslot %}
+        </label>
+        <select id="{{ attrs.id }}" name="{{ attrs.name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             {% for option in attrs.choices %}
                 <option {% if option.0 == attrs.value %}selected{% endif %}
                         value="{{ option.0 }}">{{ option.1 }}</option>
             {% endfor %}
         </select>
-        {% if attrs.unlabeled %}
-            <label for="{{ attrs.id }}">
-                {% slot label %}
-                {% endslot %}
-            </label>
-        {% endif %}
     </div>
 {% else %}
-    <div class="{% if attrs.unlabeled %}form-floating{% endif %} mb-3">
-        {% if not attrs.unlabeled %}
-            <label for="{{ attrs.id }}">
-                {% slot label %}
-                {% endslot %}
-            </label>
-        {% endif %}
+    <div class="mb-4">
+        <label for="{{ attrs.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            {% slot label %}
+            {% endslot %}
+        </label>
         <input {% if attrs.required %}required{% endif %}
                name="{{ attrs.name }}"
-               {% if attrs.placeholder %}placeholder="{{ attrs.placeholder }}" {% elif attrs.unlabeled %}placeholder="{% slot label %}{% endslot %}"{% endif %}
-               class="{% if attrs.errors %}is-invalid{% endif %} form-control rounded-3"
+               {% if attrs.placeholder %}placeholder="{{ attrs.placeholder }}"{% endif %}
+               class="{% if attrs.errors %}border-red-500 focus:border-red-500 focus:ring-red-500{% else %}border-gray-300 focus:ring-blue-500 focus:border-blue-500{% endif %} bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                id="{{ attrs.id }}"
                {% if attrs.readonly %}readonly{% endif %}
                {% if attrs.disabled %}disabled{% endif %}
@@ -80,20 +70,14 @@
                {% if attrs.autocomplete %}autocomplete="{{ attrs.autocomplete }}"{% endif %}
                {% if attrs.value is not None %}value="{{ attrs.value }}"{% endif %}
                type="{{ attrs.type }}">
-        {% if attrs.unlabeled %}
-            <label for="{{ attrs.id }}">
-                {% slot label %}
-                {% endslot %}
-            </label>
-        {% endif %}
         {% if slots.help_text %}
-            <div class="form-text">
+            <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 {% slot help_text %}
                 {% endslot %}
             </div>
         {% endif %}
         {% if attrs.errors %}
-            {% for error in attrs.errors %}<div role="alert" class="invalid-feedback">{{ error }}</div>{% endfor %}
+            {% for error in attrs.errors %}<div role="alert" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ error }}</div>{% endfor %}
         {% endif %}
     </div>
 {% endif %}

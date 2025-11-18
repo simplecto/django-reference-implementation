@@ -4,32 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Disabled</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        .message-box {
-            max-width: 600px;
-            background: white;
-            border-radius: 8px;
-            padding: 40px;
-            text-align: center;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="message-box">
-        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-x-circle text-warning mb-3" viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+<body class="bg-gray-100 dark:bg-gray-900 flex items-center justify-center min-h-screen">
+    <div class="max-w-2xl bg-white dark:bg-gray-800 rounded-lg shadow-lg p-12 text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto text-yellow-500 mb-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <h2 class="mb-3">Upload Disabled</h2>
-        <p class="text-muted">This upload endpoint has been temporarily disabled. Please contact your administrator for more information.</p>
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Upload Disabled</h2>
+        <p class="text-gray-600 dark:text-gray-300">This upload endpoint has been temporarily disabled. Please contact your administrator for more information.</p>
     </div>
 </body>
 </html>
