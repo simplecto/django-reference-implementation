@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Files</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Uppy CSS -->
+    <link href="https://releases.transloadit.com/uppy/v3.25.3/uppy.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .upload-container {
+            max-width: 900px;
+            margin: 50px auto;
+        }
+        .upload-box {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+        }
+        .file-list {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .file-item {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        .file-info {
+            flex-grow: 1;
+        }
+        .file-name {
+            font-weight: 500;
+            color: #212529;
+        }
+        .file-meta {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        /* Uppy drag-drop customization */
+        .uppy-Root {
+            font-family: inherit;
+        }
+        .uppy-DragDrop-container {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+        .uppy-DragDrop-container:hover {
+            border-color: #0d6efd;
+        }
+        #upload-status {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <div class="text-center mb-4">
+            <h1 class="mb-2">File Upload</h1>
+            <p class="text-muted">{{ endpoint.name }}</p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Status messages for uploads -->
+        <div id="upload-status"></div>
+
+        <!-- Uppy drag-drop area -->
+        <div class="upload-box">
+            <div id="drag-drop-area"></div>
+            <div class="uppy-ProgressBar" id="upload-progress"></div>
+        </div>
+
+        <!-- File list -->
+        <div class="file-list" id="file-list-container">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">Uploaded Files <span id="file-count">({{ files.count }})</span></h4>
+                {% if user.is_authenticated and user.is_staff and files %}
+                    <a href="{% url 'dataroom:download_endpoint_zip' endpoint_id=endpoint.id %}"
+                       class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download me-1" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
+                        Download All as Zip
+                    </a>
+                {% endif %}
+            </div>
+            <div id="file-list">
+                {% if files %}
+                    {% for file in files %}
+                    <div class="file-item" data-file-id="{{ file.id }}">
+                        <div class="file-info">
+                            <div class="file-name">{{ file.filename }}</div>
+                            <div class="file-meta">
+                                Uploaded {{ file.uploaded_at|date:"F d, Y g:i A" }} • {{ file.file_size_bytes|filesizeformat }}
+                            </div>
+                        </div>
+                        <form method="post" action="{% url 'dataroom:delete_file' endpoint_id=endpoint.id file_id=file.id %}" style="display: inline;" class="delete-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('Are you sure you want to delete {{ file.filename }}?');">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center text-muted" id="no-files-message">
+                        <p>No files uploaded yet</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Uppy JavaScript -->
+    <script src="https://releases.transloadit.com/uppy/v3.25.3/uppy.min.js"></script>
+
+    <script>
+        // Get CSRF token from cookie
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+
+        // Initialize Uppy
+        const uppy = new Uppy.Uppy({
+            autoProceed: false,
+            allowMultipleUploadBatches: true,
+            restrictions: {
+                // No restrictions - accept any file type and size
+            }
+        })
+        .use(Uppy.DragDrop, {
+            target: '#drag-drop-area',
+            note: 'Drag and drop files here, or click to select'
+        })
+        .use(Uppy.ProgressBar, {
+            target: '#upload-progress',
+            hideAfterFinish: false
+        })
+        .use(Uppy.XHRUpload, {
+            endpoint: '{% url "dataroom:ajax_upload" endpoint_id=endpoint.id %}',
+            formData: true,
+            fieldName: 'file',
+            headers: {
+                'X-CSRFToken': csrftoken
+            },
+            limit: 5  // Upload up to 5 files concurrently
+        });
+
+        // Show status message
+        function showStatus(message, type = 'success') {
+            const statusDiv = document.getElementById('upload-status');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type} alert-dismissible fade show`;
+            alert.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            statusDiv.appendChild(alert);
+
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 150);
+            }, 5000);
+        }
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        // Format date
+        function formatDate(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+        }
+
+        // Add uploaded file to list
+        function addFileToList(fileData) {
+            const fileList = document.getElementById('file-list');
+            const noFilesMessage = document.getElementById('no-files-message');
+
+            // Remove "no files" message if it exists
+            if (noFilesMessage) {
+                noFilesMessage.remove();
+            }
+
+            // Create new file item
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.setAttribute('data-file-id', fileData.id);
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <div class="file-name">${fileData.filename}</div>
+                    <div class="file-meta">
+                        Uploaded ${formatDate(fileData.uploaded_at)} • ${formatFileSize(fileData.size)}
+                    </div>
+                </div>
+                <form method="post" action="/upload/{{ endpoint.id }}/delete/${fileData.id}/" style="display: inline;" class="delete-form">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                            onclick="return confirm('Are you sure you want to delete ${fileData.filename}?');">
+                        Delete
+                    </button>
+                </form>
+            `;
+
+            // Add to top of list
+            fileList.insertBefore(fileItem, fileList.firstChild);
+
+            // Update file count
+            const currentCount = fileList.querySelectorAll('.file-item').length;
+            document.getElementById('file-count').textContent = `(${currentCount})`;
+        }
+
+        // Handle successful upload
+        uppy.on('upload-success', (file, response) => {
+            if (response.body && response.body.file) {
+                addFileToList(response.body.file);
+                showStatus(`File "${response.body.file.filename}" uploaded successfully!`, 'success');
+            }
+        });
+
+        // Handle upload errors
+        uppy.on('upload-error', (file, error, response) => {
+            let errorMessage = 'Error uploading file';
+            if (response && response.body && response.body.error) {
+                errorMessage = response.body.error;
+            } else if (error) {
+                errorMessage = error.message || errorMessage;
+            }
+            showStatus(`${errorMessage}`, 'danger');
+        });
+
+        // Handle complete batch
+        uppy.on('complete', (result) => {
+            if (result.successful.length > 0) {
+                console.log('Upload complete:', result);
+            }
+        });
+
+        // Auto-upload when files are added
+        uppy.on('file-added', (file) => {
+            uppy.upload();
+        });
+    </script>
+</body>
+</html>

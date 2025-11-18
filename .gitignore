@@ -1,6 +1,7 @@
 venv/
 __pycache__/
 data/
+logs/
 
 env
 env.backup
@@ -10,6 +11,7 @@ config.mk
 *.db
 
 src/staticfiles/*
+src/media/
 .idea/**
 
 
