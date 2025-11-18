@@ -16,7 +16,7 @@ dependencies = [
     "certifi==2025.8.3",
     "charset-normalizer==3.4.3",
     "django-environ==0.12.0",
-    "Django==5.2.5",
+    "Django==5.2.8",
     "django-solo==2.4.0",
     "gunicorn==23.0.0",
     "idna==3.10",
