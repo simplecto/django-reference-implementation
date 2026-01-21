@@ -27,7 +27,7 @@ dependencies = [
     "requests==2.32.5",
     "sqlparse==0.5.3",
     "typing_extensions==4.14.1",
-    "urllib3==2.5.0",
+    "urllib3==2.6.3",
     "whitenoise==6.9.0",
     "PyJWT==2.10.1",
     "django-allauth[mfa,socialaccount]",
