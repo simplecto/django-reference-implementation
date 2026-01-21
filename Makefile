@@ -59,14 +59,6 @@ snapshot-local-db: ## Create a snapshot of the local database
 restore-local-db: ## Restore the local database from a snapshot
 	docker compose exec -T postgres pg_restore -U postgres -d django_reference < django_reference.dump
 
-logs/:
-	mkdir -p logs/
-
-.PHONY: runserver
-runserver: logs/ ## Run Django development server with logging to logs/server.log
-	@echo "Starting Django server on http://0.0.0.0:8008 (logs: logs/server.log)"
-	uv run src/manage.py runserver 0.0.0.0:8008 2>&1 | tee logs/server.log
-
 ##########################################################################
 # DJANGO-ALLAUTH DEPENDENCY MANAGEMENT
 ##########################################################################

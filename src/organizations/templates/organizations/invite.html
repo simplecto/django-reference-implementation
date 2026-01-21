@@ -1,0 +1,31 @@
+{% extends "organizations/base.html" %}
+{% load django_bootstrap5 %}
+
+{% block h1 %}Invite someone to organization{% endblock %}
+
+{% block breadcrumb_title %}Invite someone to organization{% endblock %}
+
+
+{% block page_content %}
+<div class="row">
+    <div class="col-md-3">
+
+        {#  show form errors #}
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong>Oops! We have a problem:</strong>
+                 {% for error in form.non_field_errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+
+            </div>
+        {% endif %}
+        {#  show form #}
+        <form method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form layout="horizontal" %}
+            <button class="btn btn-sm btn-primary" type="submit">Invite</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

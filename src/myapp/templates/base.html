@@ -8,14 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="{% static 'site.css' %}">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class'
-        }
-    </script>
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css' %}">
 
     <script src="{% static 'site.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'vendor/htmx.js' %}"></script>
 
     {{ site_config.js_head|safe }}
@@ -26,9 +23,10 @@
 <body>
     {% include "_alerts.html" %}
     {% include "_header.html" %}
-    <main class="container mx-auto px-4 max-w-7xl">
+    <main class="container">
     {% block content %}{% endblock %}
     </main>
+    {% include "_footer.html" %}
     {{ site_config.js_body|safe }}
 
     {% if request.user.is_staff and site_config.include_staff_in_analytics %}

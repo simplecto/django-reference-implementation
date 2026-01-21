@@ -1,102 +1,46 @@
 <header>
-    <nav class="bg-gray-800 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-xl font-semibold">{{ site_name }}</span>
-                    <div class="hidden md:block ml-10">
-                        <div class="flex items-baseline space-x-4">
-                            <a href="/" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Home</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="hidden md:block">
-                    {% if request.user.is_authenticated %}
-                    <div class="relative inline-block text-left">
-                        <button type="button" onclick="toggleDropdown(event)" class="inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-white bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                            {{ request.user }}
-                            <svg class="-mr-1 ml-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                        <div class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-gray-700 ring-1 ring-black ring-opacity-5 z-50" role="menu">
-                            <div class="py-1">
-                                <a href="{% url 'account_email' %}" class="block px-4 py-2 text-sm text-white hover:bg-gray-600">Account Settings</a>
-                                {% url 'account_email' as email_url_ %}
-                                {% url 'socialaccount_connections' as socialaccount_url_ %}
-                                {% if email_url_ or socialaccount_url_ %}
-                                <a href="{% if email_url_ %}{{ email_url_ }}{% else %}{{ socialaccount_url_ }}{% endif %}" class="block px-4 py-2 text-sm text-white hover:bg-gray-600">Manage Account</a>
-                                {% endif %}
-                                {% if request.user.is_superuser %}
-                                <a href="{% url 'admin:index' %}" class="block px-4 py-2 text-sm text-white hover:bg-gray-600">Admin</a>
-                                {% endif %}
-                                <hr class="my-1 border-gray-600">
-                                <a href="{% url 'account_logout' %}" class="block px-4 py-2 text-sm text-white hover:bg-gray-600">Logout</a>
-                            </div>
-                        </div>
-                    </div>
-                    {% else %}
-                    <div class="flex items-center space-x-4">
-                        <a href="{% url 'account_login' %}" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Login</a>
-                        <a href="{% url 'account_signup' %}" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Signup</a>
-                    </div>
-                    {% endif %}
-                </div>
-
-                <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button type="button" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile menu -->
-        <div class="hidden md:hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="/" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Home</a>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <span class="navbar-brand">{{ site_name }}</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                </ul>
                 {% if request.user.is_authenticated %}
-                <a href="{% url 'account_email' %}" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Account Settings</a>
-                {% url 'account_email' as email_url_ %}
-                {% url 'socialaccount_connections' as socialaccount_url_ %}
-                {% if email_url_ or socialaccount_url_ %}
-                <a href="{% if email_url_ %}{{ email_url_ }}{% else %}{{ socialaccount_url_ }}{% endif %}" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Manage Account</a>
-                {% endif %}
-                {% if request.user.is_superuser %}
-                <a href="{% url 'admin:index' %}" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Admin</a>
-                {% endif %}
-                <a href="{% url 'account_logout' %}" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Logout</a>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">{{ request.user }}</button>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'organizations:list' %}">Organizations</a></li>
+                            <li><a class="dropdown-item" href="{% url 'account_email' %}">Account Settings</a></li>
+
+                            {% url 'account_email' as email_url_ %}
+                            {% url 'socialaccount_connections' as socialaccount_url_ %}
+                            {% if email_url_ or socialaccount_url_ %}
+                                <li><a class="dropdown-item" href="{% if email_url_ %}{{ email_url_ }}{% else %}{{ socialaccount_url_ }}{% endif %}">Manage Account</a>
+                            {% endif %}
+
+                            {% if request.user.is_superuser %}
+                            <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
+                            {% endif %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
                 {% else %}
-                <a href="{% url 'account_login' %}" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Login</a>
-                <a href="{% url 'account_signup' %}" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Signup</a>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'account_signup' %}">Signup</a></li>
+                </ul>
                 {% endif %}
+
             </div>
         </div>
     </nav>
-
-    <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
-
-        function toggleDropdown(event) {
-            const button = event.currentTarget;
-            const dropdown = button.nextElementSibling;
-            dropdown.classList.toggle('hidden');
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function closeDropdown(e) {
-                if (!button.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.classList.add('hidden');
-                    document.removeEventListener('click', closeDropdown);
-                }
-            });
-        }
-    </script>
 </header>

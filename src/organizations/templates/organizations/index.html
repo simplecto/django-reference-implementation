@@ -1,0 +1,34 @@
+{% extends "organizations/base.html" %}
+{% load organization_extras %}
+
+{% block h1 %}Your Organizations{% endblock %}
+
+{% block breadcrumb_title %}Your organizations{% endblock %}
+
+{% block page_actions %}
+<a class="btn btn-sm btn-success" href="{% url "organizations:create_organization" %}" title="Create a new organization">Create org</a>
+{% endblock %}
+
+{% block page_content %}
+
+    {% if object_list.count > 0 %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Organization Name</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for org in object_list %}
+                <tr>
+                    <td><a href="{% url "organizations:detail" slug=org.slug %}" title="See details">{{ org.name }}</a></td>
+                    <!-- users role in the organization -->
+                    <td>{{ org|get_user_role:request.user }}</td>
+                </tr>
+            {% endfor %}
+    </table>
+    {% else %}
+        <p>You are not a member of any organizations yet.</p>
+    {% endif %}
+{% endblock %}
